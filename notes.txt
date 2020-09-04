@@ -1,4 +1,0 @@
-
-indicator light: red, then sink_light blue and "flare" when the music stops and water sounds come on.
-sink is an enemy; hammer appears when music and water stop; it is the thing that takes down its HP
-enemy disappears when dead and plane_2 (material sink_light) transparent until broken through with hammer, appears.
