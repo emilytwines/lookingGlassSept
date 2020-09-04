@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/PlayButton.unity
+    guid: 6416d8f3311fbf94d8c9e08a5155cb99
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Preload.unity
+    guid: 79f23421062a7494e9e04126aeb1598a
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Title.unity
+    guid: 32382d8bc31584243bbbe6b36b0bd3e5
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Instructions.unity
+    guid: d7a58a35a3d318c4dbfba2bfb8ada8f9
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/office_v5_lights.unity
+    guid: 8396faccf2cf08440a7c39f4a7e4f3d3
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/FullScreen.unity
+    guid: 10ef712da2e94a148bbd74f6bbd228f1
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/doors_1.unity
+    guid: a89664d844d49bd4f86fe886b115a2e8
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Response1.unity
+    guid: 5059159d4d278124ebdbe684cc6adafd
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Response2.unity
+    guid: b9f125e477714be448daec7d50c38a3f
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Response3.unity
+    guid: 9177501e9b83891429a2d14689ac1825
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Response4.unity
+    guid: dd4a4e8177b06e74ab6e10236797f4df
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Response5.unity
+    guid: 0a28f8aa13996c2418da0c83b5dbcd37
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Response6.unity
+    guid: 1c1ee89e205e093479b5ff530b76f018
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Response7.unity
+    guid: 8ddbc458e3349704981a6a8d9d86f4eb
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Response8.unity
+    guid: 32b0d04221f983247a357dbe4ea62342
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/FinalScene.unity
+    guid: 4e20892250691a84db78718c58900298
+  m_configObjects: {}
