@@ -253,6 +253,10 @@ namespace RenderHeads.Media.AVProVideo
 #endif
 
 				bReturn = m_Video.Call<bool>("OpenVideoFromFile", path, offset, httpHeaderJson, forceFileFormat);
+				if (!bReturn)
+				{
+					DisplayLoadFailureSuggestion(path);
+				}
 			}
 			else
 			{
@@ -260,6 +264,14 @@ namespace RenderHeads.Media.AVProVideo
 			}
 
 			return bReturn;
+		}
+
+		private void DisplayLoadFailureSuggestion(string path)
+		{
+			if (path.ToLower().Contains("http://"))
+			{
+				Debug.LogError("Android 8 and above require HTTPS by default, change to HTTPS or enable ClearText in the AndroidManifest.xml");
+			}
 		}
 
 		public override TimeRange[] GetSeekableTimeRanges()

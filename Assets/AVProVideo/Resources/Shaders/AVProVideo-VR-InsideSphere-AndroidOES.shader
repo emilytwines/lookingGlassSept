@@ -4,6 +4,7 @@
 	{
 		_MainTex ("Base (RGB)", 2D) = "black" {}
 		_Color("Color", Color) = (0.0, 1.0, 0.0, 1.0)
+		_CroppingScalars("Cropping Scalars", Vector) = (1, 1, 1, 1)
 		[KeywordEnum(None, Top_Bottom, Left_Right, Custom_UV)] Stereo("Stereo Mode", Float) = 0
 		[KeywordEnum(None, EquiRect180)] Layout("Layout", Float) = 0
 		[Toggle(STEREO_DEBUG)] _StereoDebug("Stereo Debug Tinting", Float) = 0
@@ -42,6 +43,7 @@
 
 		uniform vec3 _cameraPosition;
 		uniform mat4 _ViewMatrix;
+		uniform vec4 _CroppingScalars;
 
 #if defined(HIGH_QUALITY)
 		varying vec3 texNormal;
@@ -80,6 +82,9 @@
 	#if defined(LAYOUT_EQUIRECT180)
 				texVal.x = ((texVal.x - 0.5) * 2.0) + 0.5;
 	#endif
+
+				// Adjust for cropping (when the decoder decodes in blocks that overrun the video frame size, it pads)
+				texVal.xy *= _CroppingScalars.xy;
 
 	#if defined(STEREO_TOP_BOTTOM) || defined(STEREO_LEFT_RIGHT)
 				bool isLeftEye = IsStereoEyeLeft(_cameraPosition, _ViewMatrix[0].xyz);
@@ -123,7 +128,7 @@
 #if defined(APPLY_GAMMA)
 			vec3 GammaToLinear(vec3 col)
 			{
-				return col * (col * (col * 0.305306011 + 0.682171111) + 0.012522878);
+				return pow(col, vec3(2.2, 2.2, 2.2));
 			}
 #endif
 
@@ -164,7 +169,11 @@
 	#if defined(LAYOUT_EQUIRECT180)
 				uv.x = ((uv.x - 0.5) * 2.0) + 0.5;
 	#endif
-	#if defined(STEREO_TOP_BOTTOM) || defined(STEREO_LEFT_RIGHT)
+
+				// Adjust for cropping (when the decoder decodes in blocks that overrun the video frame size, it pads)
+				uv.xy *= _CroppingScalars.xy;
+
+#if defined(STEREO_TOP_BOTTOM) || defined(STEREO_LEFT_RIGHT)
 				uv.xy *= texScaleOffset.xy;
 				uv.xy += texScaleOffset.zw;
 	#endif

@@ -86,6 +86,11 @@ namespace RenderHeads.Media.AVProVideo
 		public virtual void			SetDecryptionKeyBase64(string key) { }
 		public virtual void			SetDecryptionKey(byte[] key) { }
 
+		public virtual bool			IsExternalPlaybackSupported() { return false; }
+		public virtual bool			IsExternalPlaybackActive() { return false; }
+		public virtual void			SetAllowsExternalPlayback(bool allowsExternalPlayback) { }
+		public virtual void			SetExternalPlaybackFillMode(ExternalPlaybackFillMode fillMode) { }
+
 		public virtual int			GetTextureCount() { return 1; }
 		public abstract Texture		GetTexture(int index = 0);
 		public abstract int			GetTextureFrameCount();
@@ -314,5 +319,6 @@ namespace RenderHeads.Media.AVProVideo
 		public virtual void OnEnable()
 		{
 		}
+
 	}
 }

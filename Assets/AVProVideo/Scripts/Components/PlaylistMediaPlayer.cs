@@ -85,7 +85,7 @@ namespace RenderHeads.Media.AVProVideo
 	/// </summary>
 	[AddComponentMenu("AVPro Video/Playlist Media Player (BETA)", -100)]
 #if UNITY_HELPATTRIB
-	[HelpURL("http://renderheads.com/product/avpro-video/")]
+	[HelpURL("http://renderheads.com/products/avpro-video/")]
 #endif
 	public class PlaylistMediaPlayer : MediaPlayer, IMediaProducer
 	{
@@ -274,12 +274,11 @@ namespace RenderHeads.Media.AVProVideo
 							RenderTexture.ReleaseTemporary(_rt = null);
 						}
 					}
-
 					if (_rt == null)
 					{
 						_rt = RenderTexture.GetTemporary(maxWidth, maxHeight, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Default, 1);
-						Graphics.Blit(currentTexture, _rt);
 					}
+					Graphics.Blit(currentTexture, _rt);
 
 					_material.SetTexture(_propFromTex, currentTexture);
 
@@ -428,7 +427,7 @@ namespace RenderHeads.Media.AVProVideo
 					if (index < 0)
 					{
 						index += _playlist.Items.Count;
-					}					
+					}
 				}
 			}
 			return _playlist.HasItemAt(index);
@@ -567,6 +566,7 @@ namespace RenderHeads.Media.AVProVideo
 					{
 						if (NextPlayer != null)
 						{
+							NextPlayer.m_VideoPath = string.Empty;
 							NextPlayer.CloseVideo();
 						}
 					}

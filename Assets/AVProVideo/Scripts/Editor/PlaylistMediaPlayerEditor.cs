@@ -20,7 +20,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 			// prefab override logic works on the entire property.
 			EditorGUI.BeginProperty(position, label, property);
 
-			EditorGUILayout.LabelField("Items");
 
 			SerializedProperty propItems = property.FindPropertyRelative("_items");
 
@@ -148,6 +147,12 @@ namespace RenderHeads.Media.AVProVideo.Editor
 		private SerializedProperty _propTransitionDuration;
 		private SerializedProperty _propTransitionEasing;
 
+		private static bool _expandPlaylistItems = false;
+
+		private static GUIStyle _sectionBoxStyle = null;
+
+		private const string SettingsPrefix = "AVProVideo-PlaylistMediaPlayerEditor-";
+
 		private void OnEnable()
 		{
 			_propPlayerA = serializedObject.FindProperty("_playerA");
@@ -160,6 +165,13 @@ namespace RenderHeads.Media.AVProVideo.Editor
 			_propPlaylistAutoProgress = serializedObject.FindProperty("_playlistAutoProgress");
 			_propAutoCloseVideo = serializedObject.FindProperty("_autoCloseVideo");
 			_propPlaylistLoopMode = serializedObject.FindProperty("_playlistLoopMode");
+
+			_expandPlaylistItems = EditorPrefs.GetBool(SettingsPrefix + "ExpandPlaylistItems", false);
+		}
+
+		private void OnDisable()
+		{
+			EditorPrefs.SetBool(SettingsPrefix + "ExpandPlaylistItems", _expandPlaylistItems);
 		}
 
 		public override bool RequiresConstantRepaint()
@@ -179,6 +191,13 @@ namespace RenderHeads.Media.AVProVideo.Editor
 				return;
 			}
 
+			if (_sectionBoxStyle == null)
+			{
+				_sectionBoxStyle = new GUIStyle(GUI.skin.box);
+				_sectionBoxStyle.padding.top = 0;
+				_sectionBoxStyle.padding.bottom = 0;
+			}
+
 			EditorGUILayout.PropertyField(_propPlayerA);
 			EditorGUILayout.PropertyField(_propPlayerB);
 			EditorGUILayout.Space();
@@ -187,7 +206,35 @@ namespace RenderHeads.Media.AVProVideo.Editor
 			EditorGUILayout.PropertyField(_propPlaylistAutoProgress, new GUIContent("Auto Progress"));
 			EditorGUILayout.PropertyField(_propPlaylistLoopMode, new GUIContent("Loop Mode"));
 			EditorGUILayout.PropertyField(_propAutoCloseVideo);
-			EditorGUILayout.PropertyField(_propPlaylist);
+
+			{
+				EditorGUILayout.Space();
+				EditorGUILayout.Space();
+				GUI.color = Color.white;
+				GUI.backgroundColor = Color.clear;
+				if (_expandPlaylistItems)
+				{
+					GUI.color = Color.white;
+					GUI.backgroundColor = new Color(0.8f, 0.8f, 0.8f, 0.1f);
+					if (EditorGUIUtility.isProSkin)
+					{
+						GUI.backgroundColor = Color.black;
+					}
+				}
+				GUILayout.BeginVertical(_sectionBoxStyle);
+				GUI.backgroundColor = Color.white;
+				if (GUILayout.Button("Playlist Items", EditorStyles.toolbarButton))
+				{
+					_expandPlaylistItems = !_expandPlaylistItems;
+				}
+				GUI.color = Color.white;
+
+				if (_expandPlaylistItems)
+				{	
+					EditorGUILayout.PropertyField(_propPlaylist);
+				}
+				GUILayout.EndVertical();
+			}
 			EditorGUILayout.Space(); 
 			EditorGUILayout.Space();
 			GUILayout.Label("Transition", EditorStyles.boldLabel);

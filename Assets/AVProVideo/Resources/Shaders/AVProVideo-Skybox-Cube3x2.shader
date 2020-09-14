@@ -7,6 +7,8 @@ Shader "AVProVideo/Skybox/3x2 Cube"
 		_Rotation ("Rotation", Range(0, 360)) = 0
 		[NoScaleOffset] _MainTex ("MainTex (HDR)", 2D) = "grey" { }
 		[NoScaleOffset] _ChromaTex ("Chroma", 2D) = "grey" { }
+		[KeywordEnum(None, Top_Bottom, Left_Right, Custom_UV)] Stereo ("Stereo Mode", Float) = 0
+		[Toggle(STEREO_DEBUG)] _StereoDebug ("Stereo Debug Tinting", Float) = 0
 		[Toggle(APPLY_GAMMA)] _ApplyGamma("Apply Gamma", Float) = 0
 		[Toggle(USE_YPCBCR)] _UseYpCbCr("Use YpCbCr", Float) = 0
 	}
@@ -17,6 +19,9 @@ Shader "AVProVideo/Skybox/3x2 Cube"
 		Cull Off ZWrite Off
 
 		CGINCLUDE
+		#pragma multi_compile MONOSCOPIC STEREO_TOP_BOTTOM STEREO_LEFT_RIGHT STEREO_CUSTOM_UV
+		#pragma multi_compile STEREO_DEBUG_OFF STEREO_DEBUG
+		#pragma multi_compile FORCEEYE_NONE FORCEEYE_LEFT FORCEEYE_RIGHT
 		#pragma multi_compile APPLY_GAMMA_OFF APPLY_GAMMA
 		#pragma multi_compile USE_YPCBCR_OFF USE_YPCBCR
 		#include "UnityCG.cginc"
@@ -34,6 +39,7 @@ Shader "AVProVideo/Skybox/3x2 Cube"
 		sampler2D _ChromaTex;
 		float4x4 _YpCbCrTransform;
 #endif
+		uniform float3 _cameraPosition;
 
 		float3 RotateAroundYInDegrees (float3 vertex, float degrees)
 		{
@@ -59,6 +65,11 @@ Shader "AVProVideo/Skybox/3x2 Cube"
 
 #ifdef UNITY_STEREO_INSTANCING_ENABLED
 			UNITY_VERTEX_OUTPUT_STEREO
+#endif
+#if STEREO_TOP_BOTTOM | STEREO_LEFT_RIGHT
+	#if STEREO_DEBUG
+			float4 tint : COLOR;
+	#endif
 #endif
 		};
 
@@ -88,6 +99,15 @@ Shader "AVProVideo/Skybox/3x2 Cube"
 			float2 uv = v.texcoord * s + of;
 			o.texcoord = TRANSFORM_TEX(uv, _MainTex);
 
+#if STEREO_TOP_BOTTOM | STEREO_LEFT_RIGHT
+			float4 scaleOffset = GetStereoScaleOffset(IsStereoEyeLeft(_cameraPosition, UNITY_MATRIX_V[0].xyz), _MainTex_ST.y < 0.0);
+			o.texcoord *= scaleOffset.xy;
+			o.texcoord += scaleOffset.zw;
+
+			#if STEREO_DEBUG
+			o.tint = GetStereoDebugTint(IsStereoEyeLeft(_cameraPosition, UNITY_MATRIX_V[0].xyz));
+			#endif
+#endif
 			return o;
 		}
 
@@ -103,6 +123,12 @@ Shader "AVProVideo/Skybox/3x2 Cube"
 			//c = DecodeHDR(tex, _MainTex_HDR);
 			//c = c * _Tint.rgb * unity_ColorSpaceDouble.rgb;
 			c *= _Exposure;
+
+#if STEREO_TOP_BOTTOM | STEREO_LEFT_RIGHT
+	#if STEREO_DEBUG
+			c *= i.tint;
+	#endif
+#endif
 			return half4(c, 1);
 		}
 		ENDCG
