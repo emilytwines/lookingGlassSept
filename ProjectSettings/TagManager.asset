@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - text
+  - GamePlayer
+  - textOffice
+  - videoCamera
+  - corridor
+  - sledgeHammer
+  - paper
   layers:
   - Default
   - TransparentFX

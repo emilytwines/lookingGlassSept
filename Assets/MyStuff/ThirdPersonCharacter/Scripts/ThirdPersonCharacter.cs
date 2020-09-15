@@ -345,19 +345,36 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 Animation.applyRootMotion = false;
             }
         }
+        public int paper = 0;
 
         private void OnTriggerEnter(Collider other)
         {
-            IInventoryItem item = other.GetComponent<IInventoryItem>();
+  
 
+            IInventoryItem item = other.GetComponent<IInventoryItem>();
 
             if (item != null)
             //  if (hit.collider.tag == "sledgeHammer")
             {
+                
+                //Debug.Log("PAPER");
+                paper++; 
+                Debug.Log(paper);
+                
                 inventory.AddItem(item);
-
                 //  item.OnPickup();
+                if (paper > 10)
+                    {
+                        Debug.Log("INVENTORY FULLLLL");
+                        GameObject.Find("CanvasA").gameObject.transform.GetChild(0).GetChild(11).gameObject.SetActive(true);
+
+                    }
+                
+
             }
+      
+        
+
         }
 
 

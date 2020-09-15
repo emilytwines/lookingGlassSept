@@ -16,7 +16,6 @@ public GameObject cup;
    public static Inventory Instance { get; private set; }
 
 
-
     void Awake()
     {
         if (Instance == null) { Instance = this; } else { Debug.Log("Warning: multiple " + this + " in scene!"); }
@@ -37,19 +36,21 @@ private const int SLOTS = 9;
     public event EventHandler<InventoryEventArgs> ItemRemoved;
     public event EventHandler<InventoryEventArgs> ItemUsed;
 
+
    
 
 
 
     void Start()
     {
-        //RemoveItem(mItems.ElementAt(0));
+        
+    //RemoveItem(mItems.ElementAt());
       
-     // Invoke("SetParent(cup)", 114);     
-      // Debug.Log("setparent on");
+     //Invoke("SetParent(cup)", 114);     
+    // Debug.Log("setparent on");
 
-     // Invoke("SledgeHammer.Instance.gameObject.GetComponent<CapsuleColilder>().enabled = true", 113);
-     // Debug.Log("hammer SetAcive(true)");
+     //Invoke("SledgeHammer.Instance.gameObject.GetComponent<CapsuleColilder>().enabled = true", 113);
+    // Debug.Log("hammer SetAcive(true)");
      
       //  GameObject sh = (GameObject)Instantiate(Resources.Load("sledgeHammer"), new Vector3(3.915f, 0.604f, 2.1f), Quaternion.identity);
     }
@@ -59,7 +60,6 @@ private const int SLOTS = 9;
 
     void Update()
     {
-
 /*
         if(mItems.Count == 1)
             {
@@ -128,7 +128,7 @@ public void SetParent(GameObject cup)
 
     public void AddItem(IInventoryItem item)
     {
-       
+
         if (mItems.Count < SLOTS)
         {
             Collider collider = (item as MonoBehaviour).GetComponent<Collider>();
@@ -140,41 +140,59 @@ public void SetParent(GameObject cup)
                 item.OnPickup();
 
                 ItemAdded?.Invoke(this, new InventoryEventArgs(item));
-             //   Debug.Log(mItems.ElementAt(0));
-
             }
+
+        
+             //   Debug.Log(mItems.ElementAt(0));
+            
+            
         
 
-            if (mItems.Count == SLOTS)
-            {
-                Debug.Log("slots full");
-                //GameObject.Find("MainRoomManager").GetComponent<GoToZoom>().enabled = true; 
+               else if (mItems.Count == SLOTS)
+                    {
+                        Debug.Log("slots full");
+                        //GameObject.Find("MainRoomManager").GetComponent<GoToZoom>().enabled = true; 
 
-                gotKey2 = true;
-                Debug.Log (gotKey2);
-
+                        gotKey2 = true;
+                        //Debug.Log (gotKey2);
+                    }
+        }
+    }
                
                // GameObject.Find("FinalDoor").transform.GetChild(6).GetComponent<FinalDoorController2>().gotKey2 = true;
 
                 //GameObject finalDoor = GameObject.FindWithTag("finalDoor");
                // finalDoor.GetComponent<FinalDoorController2>().gotKey2 = true;
+               
+    
+
+
+
+
+/*
+   public bool Full()
+        {
+            if (Items.Count == SLOTS)
+            {
+                return true; 
             }
-
-
-
         }
+        void Check()
+        {
+        if (Full == true && OnCollisionEnter == true)
+        {
+            Debug.Log("FULLLLLL");
+        }
+         
 
-
-
-        
     }
+*/
 
     internal void UseItem(IInventoryItem item)
     {
         ItemUsed?.Invoke(this, new InventoryEventArgs(item));
 
     }
-
 
 
 /*

@@ -32,8 +32,8 @@ public class InventoryItemBase : MonoBehaviour, IInventoryItem
 
 
 
-
-   /* public virtual void OnDrop()
+//9/15 un - commented out em is scared.
+    public virtual void OnDrop()
     {
         RaycastHit hit = new RaycastHit();
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -44,7 +44,7 @@ public class InventoryItemBase : MonoBehaviour, IInventoryItem
             gameObject.transform.eulerAngles = DropRotation;
         }
     }
-    */
+
 
     public virtual void OnPickup()
     {
