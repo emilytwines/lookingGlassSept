@@ -19,7 +19,7 @@ public class PaperItem: InventoryItemBase
         base.OnUse();
 //    this.transform.localScale = new Vector3(scale, scale, scale);
     }
-    public virtual void OnPickup()
+    public override void OnPickup()
     {
       base.OnPickup();
     }
