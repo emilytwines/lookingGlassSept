@@ -14,24 +14,30 @@ public class ComputorLink : MonoBehaviour//, IPointerDownHandler
 
 public bool textBool;
 public GameObject text; 
+
+
 public void Awake()
 {
-    text = GameObject.Find("CanvasOffice").transform.GetChild(0).GetChild(2).gameObject;
+    //text = GameObject.Find("CanvasOffice").transform.GetChild(0).GetChild(2).gameObject;
     text.SetActive(false);
 
-    if (text.activeSelf == true)
-    {
-        textBool = true;
-    }
+    
 
 }
+
+//void Start()
+//{
+  //  text.SetActive(false); 
+    //textBool = false; 
+//}
+/*
     private void OnTriggerEnter(Collider other)
     {  
        textBool = true;
 
        text.SetActive(true);
     }
-        
+      
     void Update()
     {
         if(textBool == true)
@@ -58,3 +64,40 @@ public void Awake()
    }
 }
 
+  */
+void OnTriggerEnter(Collider other)
+  {
+      text.SetActive(true); 
+      textBool = true; 
+      Debug.Log(textBool);
+  }
+
+   void OnTriggerExit(Collider other)
+    {
+        text.SetActive(false);
+        textBool = false; 
+    }
+
+   void Update()
+    {
+        if(textBool == true)
+        {
+            if (Input.GetKeyDown(KeyCode.Space)) 
+                {
+                    Debug.Log("key recognized");
+                    openWindow();
+                    //OpenLinkJSPlugin();       
+                            
+                }
+        }
+    }
+
+    [DllImport("__Internal")]
+	private static extern void openWindow();
+    
+
+  // private void OnTriggerExit()
+  // {
+  //   text.SetActive(false);
+  // }
+}

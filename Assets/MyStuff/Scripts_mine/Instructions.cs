@@ -7,10 +7,10 @@ using UnityEngine.SceneManagement;
 public class Instructions : MonoBehaviour
 {
 
-
+public float time; 
      void Start()
     {
-        Invoke("Go", 5f) ;
+        Invoke("Go", time) ;
 
     }
 

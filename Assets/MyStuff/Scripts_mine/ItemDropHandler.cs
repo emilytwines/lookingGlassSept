@@ -3,12 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-//em commented in 9/15 
+//em commented in 10/1 
 /*
-public class ItemDropHandler : MonoBehaviour, IDropHandler
+public class ItemDropHandler : MonoBehaviour //IDropHandler
 {
-    public void OnDrop(PointerEventData eventData)
+   // public void OnDrop(PointerEventData eventData)
+    
+    public void OnDrop()    
     {
+        Inventory inventory = gameObject.GetComponent<Inventory>();
+        inventory.RemoveItem(item);
+        item.OnDrop();
+        Debug.Log("Drop Item");
+    }
+    
+    /*
+        {
+            IInventoryItem item = eventData.pointerDrag.gameObject.GetComponent<NewItemDragHandler>().Item;
+                 if (item != null)
+                 {
+                Inventory inventory = gameObject.GetComponent<Inventory>();
+                inventory.RemoveItem(item);
+                item.OnDrop();
+                }
+        }
+    }
+        /*
         RectTransform invPanel = transform as RectTransform;
         if (!RectTransformUtility.RectangleContainsScreenPoint(invPanel, Input.mousePosition))
         {
@@ -17,12 +37,12 @@ public class ItemDropHandler : MonoBehaviour, IDropHandler
                  {
                 Inventory inventory = gameObject.GetComponent<Inventory>();
                 inventory.RemoveItem(item);
-                  item.OnDrop();
-                  }
+                item.OnDrop();
+                }
         }
-        Debug.Log("Drop Item");
-    }      
+        */
+       
         
     
-}
-*/
+
+

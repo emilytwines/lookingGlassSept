@@ -28,13 +28,14 @@ public GameObject cup;
 
 
 
-private const int SLOTS = 9;
+private const int SLOTS = 10;
 
     //was private
     public static List<IInventoryItem> mItems = new List<IInventoryItem>();
     public event EventHandler<InventoryEventArgs> ItemAdded;
     public event EventHandler<InventoryEventArgs> ItemRemoved;
     public event EventHandler<InventoryEventArgs> ItemUsed;
+    
 
 
    
@@ -90,7 +91,6 @@ private const int SLOTS = 9;
 
 
 
-
 /* works
 public void SetParent(GameObject cup)
 {
@@ -141,52 +141,23 @@ public void SetParent(GameObject cup)
 
                 ItemAdded?.Invoke(this, new InventoryEventArgs(item));
             }
-
-        
-             //   Debug.Log(mItems.ElementAt(0));
-            
+         
             
         
 
                else if (mItems.Count == SLOTS)
                     {
                         Debug.Log("slots full");
-                        //GameObject.Find("MainRoomManager").GetComponent<GoToZoom>().enabled = true; 
 
                         gotKey2 = true;
                         //Debug.Log (gotKey2);
                     }
         }
     }
-               
-               // GameObject.Find("FinalDoor").transform.GetChild(6).GetComponent<FinalDoorController2>().gotKey2 = true;
-
-                //GameObject finalDoor = GameObject.FindWithTag("finalDoor");
-               // finalDoor.GetComponent<FinalDoorController2>().gotKey2 = true;
-               
+              
     
 
 
-
-
-/*
-   public bool Full()
-        {
-            if (Items.Count == SLOTS)
-            {
-                return true; 
-            }
-        }
-        void Check()
-        {
-        if (Full == true && OnCollisionEnter == true)
-        {
-            Debug.Log("FULLLLLL");
-        }
-         
-
-    }
-*/
 
     internal void UseItem(IInventoryItem item)
     {
@@ -195,7 +166,7 @@ public void SetParent(GameObject cup)
     }
 
 
-/*
+
     public void RemoveItem(IInventoryItem item)
     {
         if(mItems.Contains(item))
@@ -205,12 +176,12 @@ public void SetParent(GameObject cup)
             Collider collider = (item as MonoBehaviour).GetComponent<Collider>();
             if (collider != null)
             {
-                collider.enabled = true;
+               collider.enabled = true;
             }
             ItemRemoved?.Invoke(this, new InventoryEventArgs(item));
         }
     }
-    */
+    
 
 }
 

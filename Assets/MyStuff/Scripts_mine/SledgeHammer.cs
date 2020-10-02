@@ -50,7 +50,7 @@ public class SledgeHammer : InventoryItemBase
         
     }
 
-*//*
+*/ //commented in 10/2
     void Start()
     {
         SledgeHammer.Instance.gameObject.GetComponent<CapsuleCollider>().isTrigger = false;
@@ -69,7 +69,7 @@ public class SledgeHammer : InventoryItemBase
         }
 
 
-*/
+
     private void OnTriggerEnter(Collider dataFromCollision)
   {
           if (dataFromCollision.gameObject.name == "ThirdPersonController")

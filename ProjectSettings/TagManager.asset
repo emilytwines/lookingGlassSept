@@ -11,6 +11,7 @@ TagManager:
   - corridor
   - sledgeHammer
   - paper
+  - inventory
   layers:
   - Default
   - TransparentFX

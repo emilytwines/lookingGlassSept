@@ -26,16 +26,25 @@ public class HUD : MonoBehaviour
             if (transform.childCount > 0)
             {
                 Transform imageTransform = slot.GetChild(0);
+                //Sprite sprite = imageTransform.GetComponent<SpriteRenderer>().sprite;
+                //var sR = imageTransform.GetComponent<SpriteRenderer>();
                 Image image = imageTransform.GetComponent<Image>();
+
                 NewItemDragHandler itemDragHandler = imageTransform.GetComponent<NewItemDragHandler>();
                 
-
                 if (!image.enabled)
                 {
                     image.enabled = true;
                     image.sprite = e.Item.Image;
                     itemDragHandler.Item = e.Item;
-                    
+
+               /* if (!sR.enabled)
+                {
+                    sR.enabled = true;
+                    sR.sprite = e.Item.Image;
+                   //ex: image.sprite = e.Item.Image;
+                    itemDragHandler.Item = e.Item;
+                   */ 
 
                     break;
 
@@ -44,7 +53,7 @@ public class HUD : MonoBehaviour
 
         }
     }
-   private void Inventory_ItemRemoved(object sender, InventoryEventArgs e)
+   public void Inventory_ItemRemoved(object sender, InventoryEventArgs e)
             {
                 Transform inventoryPanel = transform.Find("InventoryPanel");
                 foreach (Transform slot in inventoryPanel)

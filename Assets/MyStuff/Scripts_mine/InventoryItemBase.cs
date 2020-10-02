@@ -13,6 +13,11 @@ public class InventoryItemBase : MonoBehaviour, IInventoryItem
             return "_base item_";
 
         }
+
+        set
+        {
+
+        }
     }
     public Sprite _Image;
 
@@ -32,7 +37,7 @@ public class InventoryItemBase : MonoBehaviour, IInventoryItem
 
 
 
-//9/15 un - commented out em is scared.
+
     public virtual void OnDrop()
     {
         RaycastHit hit = new RaycastHit();
