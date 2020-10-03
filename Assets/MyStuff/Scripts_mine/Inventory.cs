@@ -28,7 +28,7 @@ public GameObject cup;
 
 
 
-private const int SLOTS = 10;
+private const int SLOTS = 9;
 
     //was private
     public static List<IInventoryItem> mItems = new List<IInventoryItem>();
