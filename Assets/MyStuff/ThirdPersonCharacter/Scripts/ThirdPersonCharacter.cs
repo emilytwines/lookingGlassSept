@@ -363,7 +363,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 
                 inventory.AddItem(item);
                 //  item.OnPickup();
-                if (paper > 10)
+                if (paper > 9)
                     {
                         Debug.Log("INVENTORY FULLLLL");
                         GameObject.Find("CanvasA").gameObject.transform.GetChild(0).GetChild(11).gameObject.SetActive(true);

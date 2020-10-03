@@ -90,7 +90,7 @@ public void Update()
             {
                 Destroy(this.gameObject);
                 Destroy(GameObject.Find("sink_wall"));
-                Destroy(GameObject.Find("beacon_light"));
+                //Destroy(GameObject.Find("beacon_light"));
                 //Destroy(GameObject.Find("clock"));
                 Destroy(GameObject.Find("pic1"));
                 Destroy(GameObject.Find("pic2"));

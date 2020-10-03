@@ -37,7 +37,7 @@ public class ShredderEm : MonoBehaviour
         text = false; 
     }
 //Inventory inventory = new Inventory();
-
+/*
     void Update()
     {
        if(text == true)
@@ -65,7 +65,7 @@ public class ShredderEm : MonoBehaviour
                 //    Destroy(item.GetComponent<Image>());
                 //    Debug.Log("Destroyed");
                    
-
+/*
                 }
                 /*
                 GameObject[] itemsA2 = GameObject.FindGameObjectsWithTag("inventory");
@@ -128,9 +128,9 @@ public class ShredderEm : MonoBehaviour
        */
        }
     
-    }  
+   
     
-}
+
 
 
 
