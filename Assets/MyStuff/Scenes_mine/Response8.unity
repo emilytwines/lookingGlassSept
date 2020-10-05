@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebefac2af21e11f459db9d3ff12a2246, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToStop: 164
+  timeToStop: 1
   mediaPlayer8: {fileID: 570630851}
 --- !u!114 &43222360
 MonoBehaviour:

@@ -1843,7 +1843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3238c30e9abeda4ab73eb491a5da11c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToStop: 91
+  timeToStop: 1
   mediaPlayer6: {fileID: 697136736}
 --- !u!114 &2134410507
 MonoBehaviour:

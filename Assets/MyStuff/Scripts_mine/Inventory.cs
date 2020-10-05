@@ -125,10 +125,10 @@ public void SetParent(GameObject cup)
             Debug.Log(">1");
 
 */
+    
 
     public void AddItem(IInventoryItem item)
     {
-
         if (mItems.Count < SLOTS)
         {
             Collider collider = (item as MonoBehaviour).GetComponent<Collider>();
@@ -137,14 +137,15 @@ public void SetParent(GameObject cup)
                 collider.enabled = false;
 
                 mItems.Add(item);
+                Debug.Log(mItems.Count);
                 item.OnPickup();
 
                 ItemAdded?.Invoke(this, new InventoryEventArgs(item));
             }
-         
+        }
             
         
-
+/*
                else if (mItems.Count == SLOTS)
                     {
                         Debug.Log("slots full");
@@ -153,11 +154,18 @@ public void SetParent(GameObject cup)
                         //Debug.Log (gotKey2);
                     }
         }
-    }
-              
+        */
+    //10/5 works
+          if (mItems.Count == SLOTS)
+                    {
+                        Debug.Log("slots full");
+
+                        gotKey2 = true;
+                        //Debug.Log (gotKey2);
+                    }    
     
 
-
+        }
 
     internal void UseItem(IInventoryItem item)
     {
@@ -167,7 +175,7 @@ public void SetParent(GameObject cup)
 
 
 
-    public void RemoveItem(IInventoryItem item)
+   /* public void RemoveItem(IInventoryItem item)
     {
         if(mItems.Contains(item))
         {
@@ -182,6 +190,6 @@ public void SetParent(GameObject cup)
         }
     }
     
-
+*/
 }
 

@@ -345,7 +345,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 Animation.applyRootMotion = false;
             }
         }
-        public int paper = 0;
+        private int paper = 0;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -359,7 +359,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
                 
                 //Debug.Log("PAPER");
                 paper++; 
-                Debug.Log(paper);
+                //Debug.Log(paper);
                 
                 inventory.AddItem(item);
                 //  item.OnPickup();

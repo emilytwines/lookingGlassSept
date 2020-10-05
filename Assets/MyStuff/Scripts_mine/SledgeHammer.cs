@@ -24,7 +24,7 @@ public class SledgeHammer : InventoryItemBase
     //public static bool onUse = false;
     public GameObject player;
 
-    public int delay = 214; 
+    public int delay;
     public override string Name
     {
         get
