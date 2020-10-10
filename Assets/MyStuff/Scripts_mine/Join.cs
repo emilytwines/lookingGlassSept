@@ -6,7 +6,8 @@ public class Join : MonoBehaviour {
 
 	public void OpenLinkJSPluginT() {
 		#if !UNITY_EDITOR
-		openWindowT("https://us02web.zoom.us/j/7283544436");
+		openWindowT("http://www.playlookingglass.com/join");
+		//openWindowT("https://us02web.zoom.us/j/7283544436");
 		#endif
 	}
 

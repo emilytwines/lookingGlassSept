@@ -1205,7 +1205,7 @@ PrefabInstance:
       objectReference: {fileID: 1825639392}
     - target: {fileID: 1937568176, guid: 34c7c5be0a59bba4b86890e041c96752, type: 3}
       propertyPath: delay
-      value: 10
+      value: 219
       objectReference: {fileID: 0}
     - target: {fileID: 1937568176, guid: 34c7c5be0a59bba4b86890e041c96752, type: 3}
       propertyPath: player
@@ -1278,6 +1278,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: sledgeHammer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7645045473873792248, guid: 34c7c5be0a59bba4b86890e041c96752,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1937568175, guid: 34c7c5be0a59bba4b86890e041c96752, type: 3}
@@ -3994,7 +3999,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2000
   field of view: 76
   orthographic: 0
   orthographic size: 5

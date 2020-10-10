@@ -6310,7 +6310,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.96862745, g: 0.9843137, b: 0.7647059, a: 1}
   m_Intensity: 1
-  m_Range: 4.7372966
+  m_Range: 5.3497295
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -7214,7 +7214,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 912325507}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3c0f95e60516f547942acefbd46bd39, type: 3}
   m_Name: 
@@ -7229,7 +7229,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 912325507}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be2185d51216c4d4fa42909ad3c4c7b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 2fe70111b3549bb48ad85e3804a2f2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &944484401
@@ -11981,7 +11981,7 @@ MonoBehaviour:
   SinkTxtHealth: {fileID: 1289117518}
   Min: 0
   Max: 100
-  damage: 5
+  damage: 10
 --- !u!114 &1770383204
 MonoBehaviour:
   m_ObjectHideFlags: 0

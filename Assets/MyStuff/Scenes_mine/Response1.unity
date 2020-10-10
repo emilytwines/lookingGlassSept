@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e199ae4bde8ecc469124d120c9182c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToStop: 1
+  timeToStop: 149
   mediaPlayer: {fileID: 1134759063}
 --- !u!1 &667131075
 GameObject:
