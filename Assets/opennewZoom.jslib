@@ -3,7 +3,7 @@ mergeInto(LibraryManager.library, {
   openWindowT: function () {
 
      document.onmouseup = function() {
-          var url = "https://us02web.zoom.us/j/7283544436";
+          var url = "http://www.playlookingglass.com/join";
           
           window.open(url, '_blank');
         

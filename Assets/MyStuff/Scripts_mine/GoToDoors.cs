@@ -18,7 +18,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
            // GameObject.Find("HUD").transform.GetChild(1).gameObject.SetActive(true);
 
-            SceneManager.LoadScene("FullScreen");
+            SceneManager.LoadScene("doors_1");
            // GameObject.Find("Camera").SetActive(true);
            // GameObject.Find("ThirdPersonController").transform.GetComponent<ThirdPersonCharacter>().GetComponent<DamageSource>().enabled = false;
 
