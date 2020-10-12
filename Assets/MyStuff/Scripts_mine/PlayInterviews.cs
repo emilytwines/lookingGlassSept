@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using RenderHeads.Media.AVProVideo;
+
+namespace UnityStandardAssets.Utility
+{
 public class PlayInterviews : MonoBehaviour
 {
 
@@ -18,7 +20,7 @@ public class PlayInterviews : MonoBehaviour
 
         //GameObject.Find("tempMainCameraFinal").SetActive(true);
         
-        GameObject.FindWithTag("GamePlayer").GetComponent<Script>().InterviewsCamera.SetActive(true);
+        GameObject.FindWithTag("GamePlayer").GetComponent<InterviewsCamera>().enabled = true; 
 
         CameraMain.Instance.gameObject.SetActive(false);
     }
@@ -52,5 +54,5 @@ public class PlayInterviews : MonoBehaviour
 
     }
 */
+    }
 }
-    

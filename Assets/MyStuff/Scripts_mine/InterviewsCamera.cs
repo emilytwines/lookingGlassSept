@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InterviewsCamera : MonoBehaviour
+namespace UnityStandardAssets.Utility
 {
-    namespace UnityStandardAssets.Utility
-    {
+	public class InterviewsCamera : MonoBehaviour
+	{
 		// The target we are following
 		[SerializeField]
 		private Transform target;
