@@ -12,6 +12,7 @@ TagManager:
   - sledgeHammer
   - paper
   - inventory
+  - followCamera
   layers:
   - Default
   - TransparentFX

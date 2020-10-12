@@ -8,7 +8,6 @@ public class PlayInterviews : MonoBehaviour
 
     //public float timeToStop = 200.5f;
 
-    [SerializeField]
 
     private void Awake()
     {
@@ -19,7 +18,7 @@ public class PlayInterviews : MonoBehaviour
 
         //GameObject.Find("tempMainCameraFinal").SetActive(true);
         
-        GameObject.FindWithTag("GamePlayer").GetComponent<SmoothFollow>().enabled = true; 
+        GameObject.FindWithTag("GamePlayer").gameObject.transform.GetChild(4).gameObject.SetActive(true);   
 
         CameraMain.Instance.gameObject.SetActive(false);
     }

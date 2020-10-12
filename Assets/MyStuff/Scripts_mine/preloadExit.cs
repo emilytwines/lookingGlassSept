@@ -8,8 +8,8 @@ public class preloadExit : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        SceneManager.LoadScene("Title");
-
+        //SceneManager.LoadScene("Title");
+        SceneManager.LoadScene("FinalScene");
     }
 
 }
