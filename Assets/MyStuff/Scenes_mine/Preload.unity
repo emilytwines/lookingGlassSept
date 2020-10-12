@@ -9470,6 +9470,7 @@ GameObject:
   - component: {fileID: 1977824520}
   - component: {fileID: 1383554048}
   - component: {fileID: 1383554049}
+  - component: {fileID: 1383554050}
   m_Layer: 0
   m_Name: ThirdPersonController
   m_TagString: GamePlayer
@@ -9501,6 +9502,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a511b166af2d93747882892a36b01795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1383554050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383554047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76806479d916a64aa03f8e3eba7912f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  distance: 10
+  height: 5
+  rotationDamping: 0
+  heightDamping: 0
 --- !u!1 &1383555235
 GameObject:
   m_ObjectHideFlags: 0
