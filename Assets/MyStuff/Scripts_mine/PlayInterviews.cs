@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace UnityStandardAssets.Utility
-{
+using RenderHeads.Media.AVProVideo;
 public class PlayInterviews : MonoBehaviour
 {
 
@@ -19,7 +18,7 @@ public class PlayInterviews : MonoBehaviour
 
         //GameObject.Find("tempMainCameraFinal").SetActive(true);
         
-        GameObject.FindWithTag("GamePlayer").GetComponent<SmoothFollow>().enabled = true; 
+        GameObject.FindWithTag("GamePlayer").GetComponent<Script>().InterviewsCamera.SetActive(true);
 
         CameraMain.Instance.gameObject.SetActive(false);
     }
@@ -54,4 +53,4 @@ public class PlayInterviews : MonoBehaviour
     }
 */
 }
-}
+    

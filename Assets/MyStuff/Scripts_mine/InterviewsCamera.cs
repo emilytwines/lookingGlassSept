@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-namespace UnityStandardAssets.Utility
+public class InterviewsCamera : MonoBehaviour
 {
-	public class SmoothFollow : MonoBehaviour
-	{
-
+    namespace UnityStandardAssets.Utility
+    {
 		// The target we are following
 		[SerializeField]
 		private Transform target;
