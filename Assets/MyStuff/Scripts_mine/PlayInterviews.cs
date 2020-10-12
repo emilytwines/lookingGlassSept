@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using RenderHeads.Media.AVProVideo;
-
-public class PlayCredits : MonoBehaviour
+public class PlayInterviews : MonoBehaviour
 {
-    public float timeToStop = 200.5f;
+
+    //public float timeToStop = 200.5f;
 
     [SerializeField]
-    private MediaPlayer mediaPlayerFinal;
 
     private void Awake()
     {
-        HUDSingleton.Instance.gameObject.SetActive(false);
+        //HUDSingleton.Instance.gameObject.SetActive(false);
 
 
       //  Inventory.Instance.gameObject.SetActive(false);
 
-        GameObject.Find("tempMainCameraFinal").SetActive(true);
+        //GameObject.Find("tempMainCameraFinal").SetActive(true);
         
+        GameObject.FindWithTag("GamePlayer").GetComponent<Script>().InterviewsCamera.SetActive(true);
 
         CameraMain.Instance.gameObject.SetActive(false);
     }
@@ -29,14 +29,14 @@ public class PlayCredits : MonoBehaviour
 
     private void Start()
     {
-        Destroy(mediaPlayerFinal, timeToStop);
+        //Destroy(mediaPlayerFinal, timeToStop);
 
-        Destroy(GameObject.Find("screenFinal"), timeToStop);
+        //Destroy(GameObject.Find("screenFinal"), timeToStop);
        // Destroy(GameObject.Find("DLFinal"), timeToStop);
 
 
     }
-
+/*
     private void Update()
     {
         if (mediaPlayerFinal == null)
@@ -51,6 +51,6 @@ public class PlayCredits : MonoBehaviour
         }
 
     }
-
+*/
 }
     
