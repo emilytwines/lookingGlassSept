@@ -1,8 +1,9 @@
-﻿#if UNITY_5_4_OR_NEWER || (UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2 && !UNITY_5_3_0 && !UNITY_5_3_1 && !UNITY_5_3_2)
-	#define UNITY_HAS_VRCLASS
+﻿#if (UNITY_5_4_OR_NEWER || (UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2 && !UNITY_5_3_0 && !UNITY_5_3_1 && !UNITY_5_3_2))
+	#define UNITY_HAS_VR
 #endif
 
 using UnityEngine;
+using System.Collections.Generic;
 
 //-----------------------------------------------------------------------------
 // Copyright 2015-2020 RenderHeads Ltd.  All rights reserved.
@@ -34,14 +35,35 @@ namespace RenderHeads.Media.AVProVideo.Demos
 		private float _spinX;
 		private float _spinY;
 
+		private static bool IsVrPresent()
+		{
+			bool result = false;
+		#if UNITY_HAS_VR
+			#if UNITY_2019_3_OR_NEWER
+			var xrDisplaySubsystems = new List<UnityEngine.XR.XRDisplaySubsystem>();
+			SubsystemManager.GetInstances<UnityEngine.XR.XRDisplaySubsystem>(xrDisplaySubsystems);
+			foreach (var xrDisplay in xrDisplaySubsystems)
+			{
+				if (xrDisplay.running)
+				{
+					result = true;
+					break;
+				}
+			}
+			#else
+			result = (UnityEngine.VR.VRDevice.isPresent);
+			#endif
+		#endif
+			return result;
+		}
+
 		private void Start()
 		{
-#if UNITY_HAS_VRCLASS
-			if (UnityEngine.XR.XRDevice.isPresent)
+			if (IsVrPresent())
 			{
 				return;
 			}
-#endif
+
 			if (SystemInfo.supportsGyroscope)
 			{
 				Input.gyro.enabled = true;
@@ -62,8 +84,8 @@ namespace RenderHeads.Media.AVProVideo.Demos
 
 		void Update()
 		{
-#if UNITY_HAS_VRCLASS
-			if (UnityEngine.XR.XRDevice.isPresent)
+#if UNITY_HAS_VR
+			if (IsVrPresent())
 			{
 				// Mouse click translates to gear VR touch to reset view
 				if (_allowRecenter && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)))

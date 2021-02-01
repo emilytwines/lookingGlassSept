@@ -44,6 +44,8 @@ namespace RenderHeads.Media.AVProVideo.Editor
 				return;
 			}
 
+			EditorGUI.BeginChangeCheck();
+
 			EditorGUILayout.PropertyField(_propMediaPlayer);
 			EditorGUILayout.PropertyField(_propDefaultTexture);
 			EditorGUILayout.PropertyField(_propRenderer);
@@ -83,7 +85,7 @@ namespace RenderHeads.Media.AVProVideo.Editor
 			}
 
 			int newTexturePropertyIndex = EditorGUILayout.Popup(_guiTextTextureProperty, texturePropertyIndex, _materialTextureProperties);
-			if (newTexturePropertyIndex != texturePropertyIndex)
+			if (newTexturePropertyIndex >= 0 && newTexturePropertyIndex < _materialTextureProperties.Length)
 			{
 				_propTexturePropertyName.stringValue = _materialTextureProperties[newTexturePropertyIndex].text;
 			}
@@ -97,6 +99,16 @@ namespace RenderHeads.Media.AVProVideo.Editor
 			EditorGUILayout.PropertyField(_propTextureScale);
 
 			serializedObject.ApplyModifiedProperties();
+
+			bool wasModified = EditorGUI.EndChangeCheck();
+
+			if (Application.isPlaying && wasModified)
+			{
+				foreach (Object obj in this.targets)
+				{
+					((ApplyToMesh)obj).ForceUpdate();
+				}
+			}
 		}
 	}
 }

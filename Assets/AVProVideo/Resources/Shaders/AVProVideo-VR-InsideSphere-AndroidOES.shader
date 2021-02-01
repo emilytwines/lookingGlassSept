@@ -4,6 +4,7 @@
 	{
 		_MainTex ("Base (RGB)", 2D) = "black" {}
 		_Color("Color", Color) = (0.0, 1.0, 0.0, 1.0)
+		_CroppingScalars("Cropping Scalars", Vector) = (1, 1, 1, 1)
 		[KeywordEnum(None, Top_Bottom, Left_Right, Custom_UV)] Stereo("Stereo Mode", Float) = 0
 		[KeywordEnum(None, EquiRect180)] Layout("Layout", Float) = 0
 		[Toggle(STEREO_DEBUG)] _StereoDebug("Stereo Debug Tinting", Float) = 0
@@ -42,6 +43,7 @@
 
 		uniform vec3 _cameraPosition;
 		uniform mat4 _ViewMatrix;
+		uniform vec4 _CroppingScalars;
 
 #if defined(HIGH_QUALITY)
 		varying vec3 texNormal;
@@ -49,7 +51,7 @@
 		varying vec4 texScaleOffset;
 	#endif
 #else
-		varying vec2 texVal;
+		varying vec3 texVal;
 		uniform vec4 _MainTex_ST;
 #endif
 #if defined(STEREO_DEBUG)
@@ -74,12 +76,18 @@
 				texScaleOffset = GetStereoScaleOffset(isLeftEye, false);
 	#endif
 #else
-				texVal = gl_MultiTexCoord0.xy;
-				texVal = transformTex(gl_MultiTexCoord0.xy, _MainTex_ST);
-				texVal = vec2(1.0, 1.0) - texVal;
+				texVal.xy = gl_MultiTexCoord0.xy;
+				texVal.xy = transformTex(gl_MultiTexCoord0.xy, _MainTex_ST);
+				texVal.xy = vec2(1.0, 1.0) - texVal.xy;
 	#if defined(LAYOUT_EQUIRECT180)
 				texVal.x = ((texVal.x - 0.5) * 2.0) + 0.5;
+
+				// Set value for clipping if UV area is behind viewer
+				texVal.z = (gl_MultiTexCoord0.x > 0.25 && gl_MultiTexCoord0.x < 0.75) ? 1.0 : -1.0;
 	#endif
+
+				// Adjust for cropping (when the decoder decodes in blocks that overrun the video frame size, it pads)
+				texVal.xy *= _CroppingScalars.xy;
 
 	#if defined(STEREO_TOP_BOTTOM) || defined(STEREO_LEFT_RIGHT)
 				bool isLeftEye = IsStereoEyeLeft(_cameraPosition, _ViewMatrix[0].xyz);
@@ -88,11 +96,11 @@
 
 				texVal.xy *= scaleOffset.xy;
 				texVal.xy += scaleOffset.zw;
-	#elif defined (STEREO_CUSTOM_UV)
+	#elif defined(STEREO_CUSTOM_UV)
 				if (!IsStereoEyeLeft(_cameraPosition, _ViewMatrix[0].xyz))
 				{
-					texVal = transformTex(gl_MultiTexCoord1.xy, _MainTex_ST);
-					texVal = vec2(1.0, 1.0) - texVal;
+					texVal.xy= transformTex(gl_MultiTexCoord1.xy, _MainTex_ST);
+					texVal.xy = vec2(1.0, 1.0) - texVal.xy;
 				}
 	#endif
 #endif
@@ -105,6 +113,7 @@
 
 			#ifdef FRAGMENT
 
+			
 #if defined(HIGH_QUALITY)
 	#if defined (GL_FRAGMENT_PRECISION_HIGH)
 			precision highp float;
@@ -114,8 +123,9 @@
 			varying vec4 texScaleOffset;
 	#endif
 #else
-			varying vec2 texVal;
+			varying vec3 texVal;
 #endif
+			uniform vec4 _CroppingScalars;
 #if defined(STEREO_DEBUG)
 			varying vec4 tint;
 #endif
@@ -123,7 +133,7 @@
 #if defined(APPLY_GAMMA)
 			vec3 GammaToLinear(vec3 col)
 			{
-				return col * (col * (col * 0.305306011 + 0.682171111) + 0.012522878);
+				return pow(col, vec3(2.2, 2.2, 2.2));
 			}
 #endif
 
@@ -156,31 +166,50 @@
 				vec2 uv;
 
 #if defined(HIGH_QUALITY)
-				uv = NormalToEquiRect(normalize(texNormal));
+				vec3 n = normalize(texNormal);
+	#if defined(LAYOUT_EQUIRECT180)
+				if( n.z > 0.0001 )
+				{
+					// Clip pixels on the back of the sphere
+					discard;
+				}
+	#endif
+				
+//				uv = NormalToEquiRect(normalize(texNormal));
+				uv = NormalToEquiRect(n);
 				uv.x += 0.75;
 				uv.x = mod(uv.x, 1.0);
 				uv = transformTex(uv, _MainTex_ST);
-				
+
 	#if defined(LAYOUT_EQUIRECT180)
 				uv.x = ((uv.x - 0.5) * 2.0) + 0.5;
 	#endif
+
+				// Adjust for cropping (when the decoder decodes in blocks that overrun the video frame size, it pads)
+				uv.xy *= _CroppingScalars.xy;
+
 	#if defined(STEREO_TOP_BOTTOM) || defined(STEREO_LEFT_RIGHT)
 				uv.xy *= texScaleOffset.xy;
 				uv.xy += texScaleOffset.zw;
 	#endif
 #else
 				uv = texVal.xy;
+	#if defined(LAYOUT_EQUIRECT180)
+				if( texVal.z < -0.0001 )
+				{
+					// Clip pixels on the back of the sphere
+					discard;
+				}
+	#endif
 #endif
 
 				vec4 col = vec4(1.0, 1.0, 0.0, 1.0);
 #if defined(SHADER_API_GLES) || defined(SHADER_API_GLES3)
-
 	#if __VERSION__ < 300
 				col = texture2D(_MainTex, uv);
 	#else
 				col = texture(_MainTex, uv);
 	#endif
-
 #endif
 				col *= _Color;
 
@@ -191,6 +220,7 @@
 #if defined(STEREO_DEBUG)
 				col *= tint;
 #endif
+
 				gl_FragColor = col;
 			}
             #endif       

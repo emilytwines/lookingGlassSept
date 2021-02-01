@@ -504,11 +504,13 @@ namespace RenderHeads.Media.AVProVideo
 
 		public override void Seek(float timeMs)
 		{
+			_isSeekingStarted = true;
 			Native.SetCurrentTime(_instance, timeMs / 1000f, false);
 		}
 
 		public override void SeekFast(float timeMs)
 		{
+			_isSeekingStarted = true;
 			Native.SetCurrentTime(_instance, timeMs / 1000f, true);
 		}
 

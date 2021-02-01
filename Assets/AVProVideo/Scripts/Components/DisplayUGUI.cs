@@ -87,6 +87,7 @@ namespace RenderHeads.Media.AVProVideo
 		private static int _propChromaTex;
 		private const string PropYpCbCrTransformName = "_YpCbCrTransform";
 		private static int _propYpCbCrTransform;
+		private static int _propCroppingScalars;
 
 #if UNITY_UGUI_NOSET_TEXELSIZE
 		private static int _propMainTextureTexelSize;
@@ -111,6 +112,7 @@ namespace RenderHeads.Media.AVProVideo
 				_propChromaTex = Shader.PropertyToID(PropChromaTexName);
 				_propUseYpCbCr = Shader.PropertyToID("_UseYpCbCr");
 				_propYpCbCrTransform = Shader.PropertyToID(PropYpCbCrTransformName);
+				_propCroppingScalars = Shader.PropertyToID("_CroppingScalars");
 #if UNITY_UGUI_NOSET_TEXELSIZE
 				_propMainTextureTexelSize = Shader.PropertyToID("_MainTex_TexelSize");
 #endif
@@ -403,7 +405,23 @@ namespace RenderHeads.Media.AVProVideo
 					Helper.SetupGammaMaterial(material, _mediaPlayer.Info.PlayerSupportsLinearColorSpace());
 				}
 #else
-				_propApplyGamma |= 0;
+				_propApplyGamma |= 0;	// Prevent compiler warning about unused variable
+#endif
+
+#if (!UNITY_EDITOR && UNITY_ANDROID)
+				// Adjust for cropping (when the decoder decodes in blocks that overrun the video frame size, it pads), OES only as we apply this lower down for none-OES
+				if (_mediaPlayer.PlatformOptionsAndroid.useFastOesPath && 
+					_mediaPlayer.Info != null && 
+					material.HasProperty(_propCroppingScalars) )
+				{
+					float[] transform = _mediaPlayer.Info.GetTextureTransform();
+					if (transform != null)
+					{
+						material.SetVector(_propCroppingScalars, new Vector4(transform[0], transform[3], 1.0f, 1.0f));
+					}
+				}
+#else
+				_propCroppingScalars |= 0;	// Prevent compiler warning about unused variable
 #endif
 			}
 		}

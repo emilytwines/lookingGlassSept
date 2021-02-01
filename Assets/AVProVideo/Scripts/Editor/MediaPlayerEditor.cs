@@ -99,7 +99,7 @@ namespace RenderHeads.Media.AVProVideo.Editor
 		public const string LinkForumLastPage = "http://forum.unity3d.com/threads/released-avpro-video-complete-video-playback-solution.385611/page-100";
 		public const string LinkGithubIssues = "https://github.com/RenderHeads/UnityPlugin-AVProVideo/issues";
 		public const string LinkGithubIssuesNew = "https://github.com/RenderHeads/UnityPlugin-AVProVideo/issues/new/choose";
-		public const string LinkAssetStorePage = "https://assetstore.unity.com/packages/slug/56355";
+		public const string LinkAssetStorePage = "https://assetstore.unity.com/packages/tools/video/avpro-video-56355?aid=1101lcNgx";
 		public const string LinkUserManual = "http://downloads.renderheads.com/docs/UnityAVProVideo.pdf";
 		public const string LinkScriptingClassReference = "http://www.renderheads.com/content/docs/AVProVideoClassReference/";
 
@@ -2507,6 +2507,15 @@ namespace RenderHeads.Media.AVProVideo.Editor
 
 		private void OnInspectorGUI_Override_Apple(string optionsVarName)
 		{
+			// Audio mode
+
+			SerializedProperty audioMode = serializedObject.FindProperty(optionsVarName + ".audioMode");
+			if (audioMode != null)
+			{
+				EditorGUILayout.PropertyField(audioMode, new GUIContent("Audio Mode"));
+			}
+			GUILayout.Space(8f);
+
 			// HTTP header fields
 
 			SerializedProperty httpHeadersProp = serializedObject.FindProperty(optionsVarName + ".httpHeaders");
@@ -2578,9 +2587,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 
 		private void OnInspectorGUI_Override_MacOSX()
 		{
-			//MediaPlayer media = (this.target) as MediaPlayer;
-			//MediaPlayer.OptionsMacOSX options = media._optionsMacOSX;
-
 			GUILayout.Space(8f);
 
 			string optionsVarName = MediaPlayer.GetPlatformOptionsVariable((Platform)_platformIndex);
@@ -2589,9 +2595,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 
 		private void OnInspectorGUI_Override_iOS()
 		{
-			//MediaPlayer media = (this.target) as MediaPlayer;
-			//MediaPlayer.OptionsIOS options = media._optionsIOS;
-
 			GUILayout.Space(8f);
 			string optionsVarName = MediaPlayer.GetPlatformOptionsVariable((Platform)_platformIndex);
 
@@ -2609,9 +2612,6 @@ namespace RenderHeads.Media.AVProVideo.Editor
 
 		private void OnInspectorGUI_Override_tvOS()
 		{
-			//MediaPlayer media = (this.target) as MediaPlayer;
-			//MediaPlayer.OptionsTVOS options = media._optionsTVOS;
-
 			GUILayout.Space(8f);
 			string optionsVarName = MediaPlayer.GetPlatformOptionsVariable((Platform)_platformIndex);
 
