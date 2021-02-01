@@ -1235,6 +1235,7 @@ MonoBehaviour:
     overridePath: 0
     pathLocation: 2
     path: 
+    audioMode: 0
     httpHeaders: []
     httpHeaderJson: 
     keyServerURLOverride: 
@@ -1244,6 +1245,7 @@ MonoBehaviour:
     overridePath: 0
     pathLocation: 2
     path: 
+    audioMode: 0
     httpHeaders: []
     httpHeaderJson: 
     keyServerURLOverride: 
@@ -1255,6 +1257,7 @@ MonoBehaviour:
     overridePath: 0
     pathLocation: 2
     path: 
+    audioMode: 0
     httpHeaders: []
     httpHeaderJson: 
     keyServerURLOverride: 
@@ -1315,12 +1318,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2feedce2e2e63647b8f875ec0894a15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: {x: 0, y: 0}
-  _scale: {x: 1, y: 1}
-  _material: {fileID: 2100000, guid: f8690656ce063cf489e23ba6bdecce5b, type: 2}
-  _texturePropertyName: 
   _media: {fileID: 1003674735}
   _defaultTexture: {fileID: 0}
+  _material: {fileID: 2100000, guid: f8690656ce063cf489e23ba6bdecce5b, type: 2}
+  _texturePropertyName: _MainTex
+  _offset: {x: 0, y: 0}
+  _scale: {x: 1, y: 1}
 --- !u!4 &1003674737
 Transform:
   m_ObjectHideFlags: 0

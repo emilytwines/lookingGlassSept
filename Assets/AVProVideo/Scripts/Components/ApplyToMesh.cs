@@ -30,8 +30,7 @@ namespace RenderHeads.Media.AVProVideo
 
 		[Header("Media Source")]
 
-		[SerializeField]
-		private MediaPlayer _media = null;
+		[SerializeField] MediaPlayer _media = null;
 
 		public MediaPlayer Player
 		{
@@ -40,8 +39,7 @@ namespace RenderHeads.Media.AVProVideo
 		}
 
 		[Tooltip("Default texture to display when the video texture is preparing")]
-		[SerializeField]
-		private Texture2D _defaultTexture = null;
+		[SerializeField] Texture2D _defaultTexture = null;
 
 		public Texture2D DefaultTexture
 		{
@@ -52,8 +50,7 @@ namespace RenderHeads.Media.AVProVideo
 		[Space(8f)]
 		[Header("Renderer Target")]
 
-		[SerializeField]
-		private Renderer _mesh = null;
+		[SerializeField] Renderer _mesh = null;
 
 		public Renderer MeshRenderer
 		{
@@ -61,8 +58,7 @@ namespace RenderHeads.Media.AVProVideo
 			set { if (_mesh != value) { _mesh = value; _isDirty = true; } }
 		}
 
-		[SerializeField]
-		private string _texturePropertyName = "_MainTex";
+		[SerializeField] string _texturePropertyName = "_MainTex";
 
 		public string TexturePropertyName
 		{
@@ -80,8 +76,7 @@ namespace RenderHeads.Media.AVProVideo
 			}
 		}
 
-		[SerializeField]
-		private Vector2 _offset = Vector2.zero;
+		[SerializeField] Vector2 _offset = Vector2.zero;
 
 		public Vector2 Offset
 		{
@@ -89,8 +84,7 @@ namespace RenderHeads.Media.AVProVideo
 			set { if (_offset != value) { _offset = value; _isDirty = true; } }
 		}
 
-		[SerializeField]
-		private Vector2 _scale = Vector2.one;
+		[SerializeField] Vector2 _scale = Vector2.one;
 
 		public Vector2 Scale
 		{
@@ -115,6 +109,7 @@ namespace RenderHeads.Media.AVProVideo
 		private static int _propYpCbCrTransform;
 		private const string PropUseYpCbCrName = "_UseYpCbCr";
 		private static int _propUseYpCbCr;
+		private static int _propCroppingScalars;
 
 		private void Awake()
 		{
@@ -145,6 +140,10 @@ namespace RenderHeads.Media.AVProVideo
 			if (_propUseYpCbCr == 0)
 			{
 				_propUseYpCbCr = Shader.PropertyToID(PropUseYpCbCrName);
+			}
+			if (_propCroppingScalars == 0)
+			{
+				_propCroppingScalars = Shader.PropertyToID("_CroppingScalars");
 			}
 
 			if (_media != null)
@@ -352,7 +351,23 @@ namespace RenderHeads.Media.AVProVideo
 									}
 								}
 #else
-								_propApplyGamma |= 0;
+								_propApplyGamma |= 0;	// Prevent compiler warning about unused variable
+#endif
+
+#if (!UNITY_EDITOR && UNITY_ANDROID)
+								// Adjust for cropping (when the decoder decodes in blocks that overrun the video frame size, it pads), OES only as we apply this lower down for none-OES
+								if (_media.PlatformOptionsAndroid.useFastOesPath && 
+									_media.Info != null && 
+									mat.HasProperty(_propCroppingScalars) )
+								{
+									float[] transform = _media.Info.GetTextureTransform();
+									if (transform != null)
+									{
+										mat.SetVector(_propCroppingScalars, new Vector4( transform[0], transform[3], 1.0f, 1.0f));
+									}
+								}
+#else
+								_propCroppingScalars |= 0;	// Prevent compiler warning about unused variable
 #endif
 							}
 						}
@@ -386,6 +401,11 @@ namespace RenderHeads.Media.AVProVideo
 		private void OnDisable()
 		{
 			ApplyMapping(_defaultTexture, false);
+		}
+
+		private void OnDestroy()
+		{
+			ChangeMediaPlayer(null);
 		}
 	}
 }

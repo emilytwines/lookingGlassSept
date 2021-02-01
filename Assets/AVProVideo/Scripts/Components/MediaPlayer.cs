@@ -126,10 +126,10 @@ namespace RenderHeads.Media.AVProVideo
 		private bool m_AudioFocusEnabled;
 		[SerializeField]
 		private Transform m_AudioFocusTransform;
-		[SerializeField, Range(40, 120)]
-		private float m_AudioFocusWidthDegrees = 90;
-		[SerializeField, Range(-24, 0)]
-		private float m_AudioFocusOffLevelDB = 0;
+		[SerializeField, Range(40f, 120f)]
+		private float m_AudioFocusWidthDegrees = 90f;
+		[SerializeField, Range(-24f, 0f)]
+		private float m_AudioFocusOffLevelDB = 0f;
 
 		[SerializeField]
 		private MediaPlayerEvent m_events = null;
@@ -156,7 +156,7 @@ namespace RenderHeads.Media.AVProVideo
 		// State
 		private bool m_VideoOpened = false;
 		private bool m_AutoStartTriggered = false;
-		private bool m_WasPlayingOnPause = false;
+		private bool m_WasPlayingOnExternalPause = false;
 		private Coroutine _renderingCoroutine = null;
 
 		// Global init
@@ -232,42 +232,42 @@ namespace RenderHeads.Media.AVProVideo
 					{
 						case '"':
 							if (builder == null)
-								builder = new System.Text.StringBuilder(str.Substring(0, i - 1));
+								builder = new System.Text.StringBuilder(str.Substring(0, i));
 							builder.Append("\\\"");
 							break;
 						case '\\':
 							if (builder == null)
-								builder = new System.Text.StringBuilder(str.Substring(0, i - 1));
+								builder = new System.Text.StringBuilder(str.Substring(0, i));
 							builder.Append("\\\\");
 							break;
 						case '/':
 							if (builder == null)
-								builder = new System.Text.StringBuilder(str.Substring(0, i - 1));
+								builder = new System.Text.StringBuilder(str.Substring(0, i));
 							builder.Append("\\/");
 							break;
 						case '\b':
 							if (builder == null)
-								builder = new System.Text.StringBuilder(str.Substring(0, i - 1));
+								builder = new System.Text.StringBuilder(str.Substring(0, i));
 							builder.Append("\\b");
 							break;
 						case '\f':
 							if (builder == null)
-								builder = new System.Text.StringBuilder(str.Substring(0, i - 1));
+								builder = new System.Text.StringBuilder(str.Substring(0, i));
 							builder.Append("\\f");
 							break;
 						case '\n':
 							if (builder == null)
-								builder = new System.Text.StringBuilder(str.Substring(0, i - 1));
+								builder = new System.Text.StringBuilder(str.Substring(0, i));
 							builder.Append("\\n");
 							break;
 						case '\r':
 							if (builder == null)
-								builder = new System.Text.StringBuilder(str.Substring(0, i - 1));
+								builder = new System.Text.StringBuilder(str.Substring(0, i));
 							builder.Append("\\r");
 							break;
 						case '\t':
 							if (builder == null)
-								builder = new System.Text.StringBuilder(str.Substring(0, i - 1));
+								builder = new System.Text.StringBuilder(str.Substring(0, i));
 							builder.Append("\\t");
 							break;
 						default:
@@ -444,6 +444,14 @@ namespace RenderHeads.Media.AVProVideo
 		[System.Serializable]
 		public class OptionsApple : PlatformOptions, ISerializationCallbackReceiver
 		{
+			public enum AudioMode
+			{
+				SystemDirect,
+				Unity
+			};
+
+			public AudioMode audioMode = AudioMode.SystemDirect;
+
 			public List<HTTPHeader> httpHeaders = new List<HTTPHeader>();
 
 			[SerializeField, Multiline]
@@ -475,6 +483,7 @@ namespace RenderHeads.Media.AVProVideo
 			public override bool IsModified()
 			{
 				return (base.IsModified())
+				|| (audioMode != AudioMode.SystemDirect)
 				|| (httpHeaders != null && httpHeaders.Count > 0)
 				|| (string.IsNullOrEmpty(httpHeaderJson) == false)
 				|| (string.IsNullOrEmpty(keyServerURLOverride) == false)
@@ -1337,7 +1346,7 @@ namespace RenderHeads.Media.AVProVideo
 			{
 				m_Control.Pause();
 			}
-			m_WasPlayingOnPause = false;
+			m_WasPlayingOnExternalPause = false;
 #if AVPROVIDEO_BETA_SUPPORT_TIMESCALE
 			_timeScaleIsControlling = false;
 #endif
@@ -1402,6 +1411,8 @@ namespace RenderHeads.Media.AVProVideo
 
 				UpdateErrors();
 				UpdateEvents();
+
+				m_Control.ResetEventState();
 			}
 
 #if UNITY_EDITOR && UNITY_5_4_OR_NEWER
@@ -1437,11 +1448,11 @@ namespace RenderHeads.Media.AVProVideo
 
 		void OnEnable()
 		{
-			if (m_Control != null && m_WasPlayingOnPause)
+			if (m_Control != null && m_WasPlayingOnExternalPause)
 			{
 				m_AutoStart = true;
 				m_AutoStartTriggered = false;
-				m_WasPlayingOnPause = false;
+				m_WasPlayingOnExternalPause = false;
 			}
 
 			if(m_Player != null)
@@ -1458,7 +1469,7 @@ namespace RenderHeads.Media.AVProVideo
 			{
 				if (m_Control.IsPlaying())
 				{
-					m_WasPlayingOnPause = true;
+					m_WasPlayingOnExternalPause = true;
 					Pause();
 				}
 			}
@@ -1890,7 +1901,10 @@ namespace RenderHeads.Media.AVProVideo
 #if UNITY_EDITOR
 #if (UNITY_EDITOR_OSX)
 #if UNITY_EDITOR_64
-			mediaPlayer = new OSXMediaPlayer();
+			OSXMediaPlayer macOSMediaPlayer = new OSXMediaPlayer();
+			mediaPlayer = macOSMediaPlayer;
+			if (_optionsMacOSX.audioMode == OptionsApple.AudioMode.Unity)
+				macOSMediaPlayer.EnableAudioCapture();
 #else
 			Debug.LogWarning("[AVProVideo] 32-bit OS X Unity editor not supported.  64-bit required.");
 #endif
@@ -1914,15 +1928,21 @@ namespace RenderHeads.Media.AVProVideo
 #endif
 			}
 #elif (UNITY_STANDALONE_OSX || UNITY_IPHONE || UNITY_IOS || UNITY_TVOS)
+			bool appleEnableAudioCapture = false;
 #if UNITY_TVOS
-			mediaPlayer = new OSXMediaPlayer(_optionsTVOS.useYpCbCr420Textures);
+			OSXMediaPlayer osxMediaPlayer = new OSXMediaPlayer(_optionsTVOS.useYpCbCr420Textures);
+			appleEnableAudioCapture = _optionsTVOS.audioMode == OptionsApple.AudioMode.Unity;
 #elif (UNITY_IOS || UNITY_IPHONE)
 			OSXMediaPlayer osxMediaPlayer = new OSXMediaPlayer(_optionsIOS.useYpCbCr420Textures);
 			osxMediaPlayer.SetResumePlaybackOnAudioSessionRouteChange(_optionsIOS.resumePlaybackOnAudioSessionRouteChange);
-			mediaPlayer = osxMediaPlayer;
+			appleEnableAudioCapture = _optionsIOS.audioMode == OptionsApple.AudioMode.Unity;
 #else
-			mediaPlayer = new OSXMediaPlayer();
+			OSXMediaPlayer osxMediaPlayer = new OSXMediaPlayer();
+			appleEnableAudioCapture = _optionsMacOSX.audioMode == OptionsApple.AudioMode.Unity;
 #endif
+			mediaPlayer = osxMediaPlayer;
+			if (appleEnableAudioCapture)
+				osxMediaPlayer.EnableAudioCapture();
 
 #elif (UNITY_ANDROID)
 			// Initialise platform (also unpacks videos from StreamingAsset folder (inside a jar), to the persistent data path)
@@ -2092,6 +2112,17 @@ namespace RenderHeads.Media.AVProVideo
 			{
 				Debug.LogError("[AVProVideo] Error: " + Helper.GetErrorMessage(errorCode));
 
+				// Display additional information for load failures
+				if (ErrorCode.LoadFailed == errorCode)
+				{
+					#if !UNITY_EDITOR && UNITY_ANDROID
+					if (m_VideoPath.ToLower().Contains("http://"))
+					{
+						Debug.LogError("Android 8 and above require HTTPS by default, change to HTTPS or enable ClearText in the AndroidManifest.xml");
+					}
+					#endif
+				}
+
 				if (m_events != null && m_events.HasListeners() && IsHandleEvent(MediaPlayerEvent.EventType.Error))
 				{
 					m_events.Invoke(this, MediaPlayerEvent.EventType.Error, errorCode);
@@ -2194,7 +2225,7 @@ namespace RenderHeads.Media.AVProVideo
 					// Seeking
 					if (IsHandleEvent(MediaPlayerEvent.EventType.StartedSeeking))
 					{
-						bool newState = m_Control.IsSeeking();
+						bool newState = m_Control.IsSeekingStarted();
 						if (newState != m_EventState_PlaybackSeeking)
 						{
 							m_EventState_PlaybackSeeking = newState;
@@ -2271,7 +2302,7 @@ namespace RenderHeads.Media.AVProVideo
 						result = !m_Info.IsPlaybackStalled();
 						break;
 					case MediaPlayerEvent.EventType.StartedSeeking:
-						result = m_Control.IsSeeking();
+						result = m_Control.IsSeekingStarted();
 						break;
 					case MediaPlayerEvent.EventType.FinishedSeeking:
 						result = !m_Control.IsSeeking();
@@ -2302,9 +2333,9 @@ namespace RenderHeads.Media.AVProVideo
 
 			if (focusStatus)
 			{
-				if (m_Control != null && m_WasPlayingOnPause)
+				if (m_Control != null && m_WasPlayingOnExternalPause)
 				{
-					m_WasPlayingOnPause = false;
+					m_WasPlayingOnExternalPause = false;
 					m_Control.Play();
 
 					Helper.LogInfo("OnApplicationFocus: playing video again");
@@ -2324,7 +2355,7 @@ namespace RenderHeads.Media.AVProVideo
 				{
 					if (m_Control!= null && m_Control.IsPlaying())
 					{
-						m_WasPlayingOnPause = true;
+						m_WasPlayingOnExternalPause = true;
 #if !UNITY_IPHONE
 						m_Control.Pause();
 #endif
@@ -2606,7 +2637,7 @@ namespace RenderHeads.Media.AVProVideo
 			{
 				if (m_Control != null && m_Control.IsPlaying())
 				{
-					m_WasPlayingOnPause = true;
+					m_WasPlayingOnExternalPause = true;
 					m_Control.Pause();
 				}
 				StopRenderCoroutine();
@@ -2617,10 +2648,10 @@ namespace RenderHeads.Media.AVProVideo
 		{
 			if (this.isActiveAndEnabled)
 			{
-				if (m_Control != null && m_WasPlayingOnPause)
+				if (m_Control != null && m_WasPlayingOnExternalPause)
 				{
 					m_AutoStart = true;
-					m_WasPlayingOnPause = false;
+					m_WasPlayingOnExternalPause = false;
 					m_AutoStartTriggered = false;
 				}
 				StartRenderCoroutine();

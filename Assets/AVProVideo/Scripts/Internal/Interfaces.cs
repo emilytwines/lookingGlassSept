@@ -43,7 +43,7 @@ namespace RenderHeads.Media.AVProVideo
 			PlaylistItemChanged,// Triggered when the new item is played in the playlist
 			PlaylistFinished,	// Triggered when the playlist reaches the end
 
-			// TODO: 
+			// TODO:
 			//StartLoop,		// Triggered when the video starts and is in loop mode
 			//EndLoop,			// Triggered when the video ends and is in loop mode
 		}
@@ -123,6 +123,10 @@ namespace RenderHeads.Media.AVProVideo
 		bool	IsFinished();
 		bool	IsBuffering();
 
+		// Internal methods
+		bool 	IsSeekingStarted();
+		void	ResetEventState();
+
 		void	Play();
 		void	Pause();
 		void	Stop();
@@ -142,11 +146,14 @@ namespace RenderHeads.Media.AVProVideo
 
 		/// <summary>
 		/// The time seeked to will be within the range [timeMS-beforeMs, timeMS+afterMs] for efficiency.
-		/// Only supported on macOS, iOS and tvOS.  
+		/// Only supported on macOS, iOS and tvOS.
 		/// Other platforms will automatically pass through to Seek()
 		/// </summary>
 		void	SeekWithTolerance(float timeMs, float beforeMs, float afterMs);
 
+		/// <summary>
+		/// Returns the current video time in milliseconds
+		/// </summary>
 		float	GetCurrentTimeMs();
 
 		/// <summary>
@@ -207,6 +214,12 @@ namespace RenderHeads.Media.AVProVideo
 		void	SetKeyServerAuthToken(string token);
 		void	SetDecryptionKeyBase64(string key);
 		void	SetDecryptionKey(byte[] key);
+
+		// External playback support
+		bool	IsExternalPlaybackSupported();
+		bool	IsExternalPlaybackActive();
+		void	SetAllowsExternalPlayback(bool allowsExternalPlayback);
+		void	SetExternalPlaybackFillMode(ExternalPlaybackFillMode fillMode);
 	}
 
 	public interface IMediaInfo
@@ -227,7 +240,7 @@ namespace RenderHeads.Media.AVProVideo
 		int		GetVideoHeight();
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <returns></returns>
 		Rect	GetCropRect();
@@ -435,6 +448,14 @@ namespace RenderHeads.Media.AVProVideo
 		CubeMap3x2,
 	}
 
+	// External playback support
+	public enum ExternalPlaybackFillMode
+	{
+		Resize,
+		ResizeAspect,
+		ResizeAspectFill,
+	};
+
 	public enum FileFormat
 	{
 		Unknown,
@@ -533,7 +554,7 @@ namespace RenderHeads.Media.AVProVideo
 
 	public static class Helper
 	{
-		public const string ScriptVersion = "1.10.3";
+		public const string ScriptVersion = "1.11.7";
 
 		public static string GetName(Platform platform)
 		{
@@ -553,7 +574,7 @@ namespace RenderHeads.Media.AVProVideo
 					result = platform.ToString();
 				break;
 			}
-			
+
 			return result;
 		}
 
@@ -716,7 +737,7 @@ namespace RenderHeads.Media.AVProVideo
 			{
 				case StereoEye.Both:
 					material.DisableKeyword("FORCEEYE_LEFT");
-					material.DisableKeyword("FORCEEYE_RIGHT");				
+					material.DisableKeyword("FORCEEYE_RIGHT");
 					material.EnableKeyword("FORCEEYE_NONE");
 					break;
 				case StereoEye.Left:
@@ -814,17 +835,26 @@ namespace RenderHeads.Media.AVProVideo
 
 		public static int ConvertTimeSecondsToFrame(float seconds, float frameRate)
 		{
+			// NOTE: Generally you should use RountToInt when converting from time to frame number
+			// but because we're adding a half frame offset we need to FloorToInt
+			seconds = Mathf.Max(0f, seconds);
+			frameRate = Mathf.Max(0f, frameRate);
 			return Mathf.FloorToInt(frameRate * seconds);
 		}
 
 		public static float ConvertFrameToTimeSeconds(int frame, float frameRate)
 		{
+			frame = Mathf.Max(0, frame);
+			frameRate = Mathf.Max(0f, frameRate);
 			float frameDurationSeconds = 1f / frameRate;
 			return ((float)frame * frameDurationSeconds) + (frameDurationSeconds * 0.5f);		// Add half a frame we that the time lands in the middle of the frame range and not at the edges
 		}
 
 		public static float FindNextKeyFrameTimeSeconds(float seconds, float frameRate, int keyFrameInterval)
 		{
+			seconds = Mathf.Max(0, seconds);
+			frameRate = Mathf.Max(0f, frameRate);
+			keyFrameInterval = Mathf.Max(0, keyFrameInterval);
 			int currentFrame = Helper.ConvertTimeSecondsToFrame(seconds, frameRate);
 			// TODO: allow specifying a minimum number of frames so that if currentFrame is too close to nextKeyFrame, it will calculate the next-next keyframe
 			int nextKeyFrame = keyFrameInterval * Mathf.CeilToInt((float)(currentFrame + 1) / (float)keyFrameInterval);
@@ -955,7 +985,7 @@ namespace RenderHeads.Media.AVProVideo
 						m = Matrix4x4.TRS(new Vector3(inputTexture.width, inputTexture.height, 0f), Quaternion.identity, new Vector3(-1f, -1f, 1f));
 						break;
 				}
-				
+
 				// The above Blit can't flip unless using a material, so we use Graphics.DrawTexture instead
 				GL.InvalidateState();
 				GL.PushMatrix();

@@ -8,15 +8,19 @@ namespace UnityStandardAssets.Utility
     public class PlayCredits : MonoBehaviour
     {
         //public float timeToStop = 200.5f;
-        public int timeToStop = 5; 
+        public int timeToStop = 214; 
 
         public MediaPlayer mediaPlayerFinal;
         public MediaPlayer mediaPlayerInterviews1;
         public MediaPlayer mediaPlayerInterviews2;
         public MediaPlayer mediaPlayerInterviews3;
         public MediaPlayer mediaPlayerInterviews4;
-
         public MediaPlayer mediaPlayerInterviewsCredits;
+        public MediaPlayer mediaPlayer_shadows2;
+        public MediaPlayer mediaPlayer_heaven;
+        public MediaPlayer mediaPlayer_soundscape;
+        public MediaPlayer mediaPlayer_maze;
+        public MediaPlayer mediaPlayer_julia;
 
 
         private void Awake()
@@ -59,10 +63,13 @@ namespace UnityStandardAssets.Utility
             mediaPlayerInterviews3.Play();             
             mediaPlayerInterviews4.Play();             
             mediaPlayerInterviews2.Play();             
-            mediaPlayerInterviewsCredits.Play();             
-
-
-        }
+            mediaPlayerInterviewsCredits.Play();
+            mediaPlayer_shadows2.Play();
+            mediaPlayer_heaven.Play();
+            mediaPlayer_soundscape.Play();
+            mediaPlayer_maze.Play();
+            mediaPlayer_julia.Play();
+    }
 
        
     }

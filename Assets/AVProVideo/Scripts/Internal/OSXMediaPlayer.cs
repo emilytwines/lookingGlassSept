@@ -143,57 +143,68 @@ namespace RenderHeads.Media.AVProVideo
 		private static extern int AVPPlayerGetBufferedTimeRangeCount(IntPtr player);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerGetBufferedTimeRange(IntPtr player, int index, out float start, out float end);
 
 		[DllImport(PluginName)]
 		private static extern int AVPPlayerGetSeekableTimeRanges(IntPtr player, [In, Out] AVPPlayerTimeRange[] ranges, ref int count);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerGetTextures(IntPtr player, [In, Out] AVPPlayerTextureInfo[] textures, ref int count);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerGetTextureTransform(IntPtr player, [In, Out] float[] transform);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerGetYpCbCrTransform(IntPtr player, ref float transform);
 
 		[DllImport(PluginName)]
 		private static extern float AVPPlayerGetVolume(IntPtr player);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerHasAudio(IntPtr player);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerHasVideo(IntPtr player);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerHasMetaData(IntPtr player);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerIsLooping(IntPtr player);
 
 		[DllImport(PluginName)]
-		private static extern void AVPPlayerSetLooping(IntPtr player, bool looping);
+		private static extern void AVPPlayerSetLooping(IntPtr player, [MarshalAs(UnmanagedType.I1)] bool looping);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerIsMuted(IntPtr player);
 
 		[DllImport(PluginName)]
-		private static extern void AVPPlayerSetMuted(IntPtr player, bool muted);
+		private static extern void AVPPlayerSetMuted(IntPtr player, [MarshalAs(UnmanagedType.I1)] bool muted);
 
 		[DllImport(PluginName)]
 		private static extern void AVPPlayerSetVolume(IntPtr player, float volume);
 
 		[DllImport(PluginName)]
-		private static extern IntPtr AVPPlayerNew(bool useYuv);
+		private static extern IntPtr AVPPlayerNew([MarshalAs(UnmanagedType.I1)] bool useYuv);
 
 		[DllImport(PluginName)]
 		private static extern IntPtr AVPPlayerRelease(IntPtr player);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerOpenFile(IntPtr player, string path);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerOpenURL(IntPtr player, string url, string headers);
 
 		[DllImport(PluginName)]
@@ -221,6 +232,7 @@ namespace RenderHeads.Media.AVProVideo
 		private static extern void AVPPlayerSetPlaybackRate(IntPtr player, float rate);
 
 		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		private static extern bool AVPPlayerUpdate(IntPtr player);
 
 		[DllImport(PluginName)]
@@ -278,10 +290,10 @@ namespace RenderHeads.Media.AVProVideo
 		private static extern void AVPPlayerSetDecryptionKey(IntPtr player, byte[] key, int len);
 
 		[DllImport(PluginName)]
-		private static extern void AVPlayerSetPlayWithoutBuffering(IntPtr player, bool playWithoutBuffering);
+		private static extern void AVPlayerSetPlayWithoutBuffering(IntPtr player, [MarshalAs(UnmanagedType.I1)] bool playWithoutBuffering);
 
 		[DllImport(PluginName)]
-		private static extern void AVPPlayerSetResumePlaybackOnAudioSessionRouteChange(IntPtr player, bool resumePlaybackOnAudioSessionRouteChange);
+		private static extern void AVPPlayerSetResumePlaybackOnAudioSessionRouteChange(IntPtr player, [MarshalAs(UnmanagedType.I1)] bool resumePlaybackOnAudioSessionRouteChange);
 
 		[DllImport(PluginName)]
 		private static extern void AVPPluginRegister();
@@ -291,6 +303,38 @@ namespace RenderHeads.Media.AVProVideo
 
 		[DllImport(PluginName)]
 		private static extern void AVPPluginSetDebugLogFunction(IntPtr fn);
+
+		// Audio capture support
+		[DllImport(PluginName)]
+		private static extern void AVPPlayerEnableAudioCapture(IntPtr player, int sampleRate, int channelCount);
+
+		[DllImport(PluginName)]
+		private static extern void AVPPlayerCopyAudio(IntPtr player, float[] buffer, int length);
+
+		[DllImport(PluginName)]
+		private static extern int  AVPPlayerGetAudioChannelCount(IntPtr player);
+
+		// External playback support
+		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
+		private static extern bool AVPPlayerIsExternalPlaybackSupported(IntPtr player);
+
+		[DllImport(PluginName)]
+		private static extern void AVPPlayerSetAllowsExternalPlayback(IntPtr player, [MarshalAs(UnmanagedType.I1)] bool allowExternalPlayback);
+
+		[DllImport(PluginName)]
+		[return: MarshalAs(UnmanagedType.I1)]
+		private static extern bool AVPPlayerIsExternalPlaybackActive(IntPtr player);
+
+		private enum AVPPlayerExternalPlaybackFillMode : int
+		{
+			Resize,
+			ResizeAspect,
+			ResizeAspectFill
+		};
+
+		[DllImport(PluginName)]
+		private static extern void AVPPlayerSetExternalPlaybackFillMode(IntPtr player, AVPPlayerExternalPlaybackFillMode fillMode);
 
 		// MediaPlayer Interface
 
@@ -419,7 +463,7 @@ namespace RenderHeads.Media.AVProVideo
 			Initialise();
 		}
 
-		public OSXMediaPlayer(bool useYpCbCr = false)
+		public OSXMediaPlayer(bool useYpCbCr = false, bool enableAudioCapture = false)
 		{
 			_useYpCbCr = useYpCbCr;
 			_player = AVPPlayerNew(useYpCbCr);
@@ -431,6 +475,9 @@ namespace RenderHeads.Media.AVProVideo
 			IntPtr self = GCHandle.ToIntPtr(_thisHandle);
 			IntPtr callback = Marshal.GetFunctionPointerForDelegate(callbackDelegate);
 			AVPPlayerAddValueDidChangeObserver(_player, self, callback, "seekableTimeRanges", 0);
+
+			if (enableAudioCapture)
+				EnableAudioCapture();
 		}
 
 		// Convenience method for calling OSXMediaPlayer.IssuePluginEvent.
@@ -534,16 +581,19 @@ namespace RenderHeads.Media.AVProVideo
 
 		public override void Seek(float ms)
 		{
+			_isSeekingStarted = true;
 			AVPPlayerSeek(_player, ms / 1000.0);
 		}
 
 		public override void SeekFast(float ms)
 		{
+			_isSeekingStarted = true;
 			AVPPlayerSeekFast(_player, ms / 1000.0);
 		}
 
 		public override void SeekWithTolerance(float timeMs, float beforeMs, float afterMs)
 		{
+			_isSeekingStarted = true;
 			AVPPlayerSeekWithTolerance(_player, timeMs / 1000.0, beforeMs / 1000.0, afterMs / 1000.0);
 		}
 
@@ -688,6 +738,37 @@ namespace RenderHeads.Media.AVProVideo
 		public override void SetDecryptionKey(byte[] key)
 		{
 			AVPPlayerSetDecryptionKey(_player, key, key.Length);
+		}
+
+		public override bool IsExternalPlaybackSupported()
+		{
+			return AVPPlayerIsExternalPlaybackSupported(_player);
+		}
+
+		public override bool IsExternalPlaybackActive()
+		{
+			return AVPPlayerIsExternalPlaybackActive(_player);
+		}
+
+		public override void SetAllowsExternalPlayback(bool allowsExternalPlayback)
+		{
+			AVPPlayerSetAllowsExternalPlayback(_player, allowsExternalPlayback);
+		}
+
+		public override void SetExternalPlaybackFillMode(ExternalPlaybackFillMode fillMode)
+		{
+			switch (fillMode)
+			{
+				case ExternalPlaybackFillMode.Resize:
+					AVPPlayerSetExternalPlaybackFillMode(_player, AVPPlayerExternalPlaybackFillMode.Resize);
+					break;
+				case ExternalPlaybackFillMode.ResizeAspect:
+					AVPPlayerSetExternalPlaybackFillMode(_player, AVPPlayerExternalPlaybackFillMode.ResizeAspect);
+					break;
+				case ExternalPlaybackFillMode.ResizeAspectFill:
+					AVPPlayerSetExternalPlaybackFillMode(_player, AVPPlayerExternalPlaybackFillMode.ResizeAspectFill);
+					break;
+			}
 		}
 
 		// IMediaProducer
@@ -957,6 +1038,50 @@ namespace RenderHeads.Media.AVProVideo
 		public void SetResumePlaybackOnAudioSessionRouteChange(bool resumePlaybackOnAudioSessionRouteChange)
 		{
 			AVPPlayerSetResumePlaybackOnAudioSessionRouteChange(_player, resumePlaybackOnAudioSessionRouteChange);
+		}
+
+		public void EnableAudioCapture()
+		{
+			int channelCount = 0;
+			switch (AudioSettings.speakerMode)
+			{
+#if !UNITY_2019_2_OR_NEWER
+				case AudioSpeakerMode.Raw:
+					break;
+#endif
+				case AudioSpeakerMode.Mono:
+					channelCount = 1;
+					break;
+				case AudioSpeakerMode.Stereo:
+					channelCount = 2;
+					break;
+				case AudioSpeakerMode.Quad:
+					channelCount = 4;
+					break;
+				case AudioSpeakerMode.Surround:
+					channelCount = 5;
+					break;
+				case AudioSpeakerMode.Mode5point1:
+					channelCount = 6;
+					break;
+				case AudioSpeakerMode.Mode7point1:
+					channelCount = 8;
+					break;
+				case AudioSpeakerMode.Prologic:
+					channelCount = 2;
+					break;
+			}
+			AVPPlayerEnableAudioCapture(_player, AudioSettings.outputSampleRate, channelCount);
+		}
+
+		public override void GrabAudio(float[] buffer, int length, int channelCount)
+		{
+			AVPPlayerCopyAudio(_player, buffer, length);
+		}
+
+		public override int GetNumAudioChannels()
+		{
+			return AVPPlayerGetAudioChannelCount(_player);
 		}
 	}
 }

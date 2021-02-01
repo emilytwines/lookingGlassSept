@@ -110,7 +110,7 @@ namespace RenderHeads.Media.AVProVideo
 		}
 
 #if (UNITY_5 || UNITY_5_4_OR_NEWER)
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_WSA_10_0 || UNITY_WINRT_8_1
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_WSA_10_0 || UNITY_WINRT_8_1 || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX || UNITY_IOS || UNITY_TVOS
 		void OnAudioFilterRead(float[] data, int channels)
 		{
 			AudioOutputManager.Instance.RequestAudio(this, _mediaPlayer, data, _channelMask, channels, _audioOutputMode);
