@@ -49,6 +49,8 @@ namespace UnityStandardAssets.Utility
             Destroy(GameObject.Find("Destroy2"));
             Destroy(GameObject.Find("Destroy3"));
             Destroy(GameObject.Find("Destroy4"));
+                        //new 2/1
+            Destroy(GameObject.Find("DLFinal"));
 
             HUDSingleton.Instance.gameObject.SetActive(true);
             Inventory.Instance.gameObject.SetActive(true);
