@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/MyStuff/Scenes_mine/doors_1.unity
     guid: a89664d844d49bd4f86fe886b115a2e8
   - enabled: 1
-    path: Assets/MyStuff/Scenes_mine/FinalScene.unity
+    path: Assets/MyStuff/Scenes_mine/FinalScene2020.unity
     guid: 4e20892250691a84db78718c58900298
   - enabled: 1
     path: Assets/MyStuff/Scenes_mine/Response1.unity
