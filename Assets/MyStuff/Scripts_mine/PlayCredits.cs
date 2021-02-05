@@ -15,6 +15,7 @@ namespace UnityStandardAssets.Utility
         public MediaPlayer mediaPlayerInterviews2;
         public MediaPlayer mediaPlayerInterviews3;
         public MediaPlayer mediaPlayerInterviews4;
+        public MediaPlayer mediaPlayerFloor; 
 
         public MediaPlayer mediaPlayerInterviewsCredits;
 
@@ -44,11 +45,13 @@ namespace UnityStandardAssets.Utility
         {
             yield return StartCoroutine("Credits");
             Destroy(mediaPlayerFinal);
+            Destroy(mediaPlayerFloor);
             Destroy(GameObject.Find("screenFinal"));
             Destroy(GameObject.Find("Destroy1"));
             Destroy(GameObject.Find("Destroy2"));
             Destroy(GameObject.Find("Destroy3"));
             Destroy(GameObject.Find("Destroy4"));
+            Destroy(GameObject.Find("Floor"));
                         //new 2/1
             Destroy(GameObject.Find("DLFinal"));
             Destroy(GameObject.Find("Destroy5"));
