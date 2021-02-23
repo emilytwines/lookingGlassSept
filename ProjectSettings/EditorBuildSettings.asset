@@ -20,13 +20,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MyStuff/Scenes_mine/office_v5_lights.unity
     guid: 8396faccf2cf08440a7c39f4a7e4f3d3
-  - enabled: 0
+  - enabled: 1
     path: Assets/MyStuff/Scenes_mine/FullScreen.unity
     guid: 10ef712da2e94a148bbd74f6bbd228f1
   - enabled: 1
     path: Assets/MyStuff/Scenes_mine/doors_1.unity
     guid: a89664d844d49bd4f86fe886b115a2e8
-  - enabled: 1
+  - enabled: 0
     path: Assets/MyStuff/Scenes_mine/FinalScene2020.unity
     guid: 4e20892250691a84db78718c58900298
   - enabled: 1
@@ -53,4 +53,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MyStuff/Scenes_mine/Response8.unity
     guid: 32b0d04221f983247a357dbe4ea62342
+  - enabled: 1
+    path: Assets/MyStuff/Scenes_mine/Shadows.unity
+    guid: 4e387b7df7f3d7c4590c675c6dc50a25
+  - enabled: 1
+    path: Assets/FinalScene2021.unity
+    guid: 44c9e27814a6a904a8d149e6acce9af6
   m_configObjects: {}
