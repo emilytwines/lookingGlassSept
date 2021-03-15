@@ -3403,7 +3403,7 @@ GameObject:
   - component: {fileID: 780230729}
   - component: {fileID: 780230728}
   m_Layer: 0
-  m_Name: survace07
+  m_Name: surface07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3535,11 +3535,11 @@ MonoBehaviour:
   m_VideoLocation: 2
   m_VideoPath: erica.mp4
   m_AutoOpen: 1
-  m_AutoStart: 0
+  m_AutoStart: 1
   m_Loop: 1
   m_Volume: 1
   m_Balance: 0
-  m_Muted: 0
+  m_Muted: 1
   m_PlaybackRate: 1
   m_Resample: 0
   m_ResampleMode: 0
@@ -4018,11 +4018,11 @@ MonoBehaviour:
   m_VideoLocation: 2
   m_VideoPath: heaven.mp4
   m_AutoOpen: 1
-  m_AutoStart: 0
+  m_AutoStart: 1
   m_Loop: 1
   m_Volume: 1
   m_Balance: 0
-  m_Muted: 0
+  m_Muted: 1
   m_PlaybackRate: 1
   m_Resample: 0
   m_ResampleMode: 0
@@ -4038,8 +4038,9 @@ MonoBehaviour:
   m_LoadSubtitles: 0
   m_SubtitleLocation: 2
   m_SubtitlePath: 
-  m_AudioHeadTransform: {fileID: 0}
-  m_AudioFocusEnabled: 0
+  m_AudioHeadTransform: {fileID: 6147009073163715929, guid: f6291201a506844eeb70ae2b4cba3ed2,
+    type: 3}
+  m_AudioFocusEnabled: 1
   m_AudioFocusTransform: {fileID: 0}
   m_AudioFocusWidthDegrees: 90
   m_AudioFocusOffLevelDB: 0
@@ -4066,7 +4067,7 @@ MonoBehaviour:
     useLowLatency: 0
     forceAudioOutputDeviceName: 
     preferredFilters: []
-    enableAudio360: 0
+    enableAudio360: 1
     audio360ChannelMode: 0
   _optionsMacOSX:
     overridePath: 0
@@ -5565,11 +5566,11 @@ MonoBehaviour:
   m_VideoLocation: 2
   m_VideoPath: credits.mp4
   m_AutoOpen: 1
-  m_AutoStart: 0
+  m_AutoStart: 1
   m_Loop: 1
   m_Volume: 1
   m_Balance: 0
-  m_Muted: 0
+  m_Muted: 1
   m_PlaybackRate: 1
   m_Resample: 0
   m_ResampleMode: 0
@@ -5848,11 +5849,11 @@ MonoBehaviour:
   m_VideoLocation: 2
   m_VideoPath: blanket.mp4
   m_AutoOpen: 1
-  m_AutoStart: 0
+  m_AutoStart: 1
   m_Loop: 1
   m_Volume: 1
   m_Balance: 0
-  m_Muted: 0
+  m_Muted: 1
   m_PlaybackRate: 1
   m_Resample: 0
   m_ResampleMode: 0
@@ -6236,11 +6237,11 @@ MonoBehaviour:
   m_VideoLocation: 2
   m_VideoPath: soundscape.mp4
   m_AutoOpen: 1
-  m_AutoStart: 0
+  m_AutoStart: 1
   m_Loop: 1
   m_Volume: 1
   m_Balance: 0
-  m_Muted: 0
+  m_Muted: 1
   m_PlaybackRate: 1
   m_Resample: 0
   m_ResampleMode: 0
@@ -9122,11 +9123,11 @@ MonoBehaviour:
   m_VideoLocation: 2
   m_VideoPath: julia.mp4
   m_AutoOpen: 1
-  m_AutoStart: 0
+  m_AutoStart: 1
   m_Loop: 1
   m_Volume: 1
   m_Balance: 0
-  m_Muted: 0
+  m_Muted: 1
   m_PlaybackRate: 1
   m_Resample: 0
   m_ResampleMode: 0
@@ -10424,11 +10425,11 @@ MonoBehaviour:
   m_VideoLocation: 2
   m_VideoPath: kai.mp4
   m_AutoOpen: 1
-  m_AutoStart: 0
+  m_AutoStart: 1
   m_Loop: 1
   m_Volume: 1
   m_Balance: 0
-  m_Muted: 0
+  m_Muted: 1
   m_PlaybackRate: 1
   m_Resample: 0
   m_ResampleMode: 0
@@ -11380,11 +11381,11 @@ MonoBehaviour:
   m_VideoLocation: 2
   m_VideoPath: maze.mp4
   m_AutoOpen: 1
-  m_AutoStart: 0
+  m_AutoStart: 1
   m_Loop: 1
   m_Volume: 1
   m_Balance: 0
-  m_Muted: 0
+  m_Muted: 1
   m_PlaybackRate: 1
   m_Resample: 0
   m_ResampleMode: 0
